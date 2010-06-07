@@ -234,7 +234,6 @@ for s = 1, screen.count() do
         separator, datewidget, dateicon,
         separator, volwidget,  volbar.widget, volicon,
         separator, orgwidget,  orgicon,
-        separator, mailwidget, mailicon,
         separator, upicon,     netwidget, dnicon,
         separator, fs.b.widget, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
         separator, membar.widget, memicon,
