@@ -8,7 +8,7 @@
 -- {{{ Main
 theme = {}
 theme.confdir       = awful.util.getdir("config")
-theme.wallpaper_cmd = { "/usr/bin/nitrogen --restore" }
+--theme.wallpaper_cmd = { "/usr/bin/nitrogen --restore" }
 --theme.wallpaper_cmd = { "awsetbg /usr/share/awesome/themes/zenburn/zenburn-background.png" }
 -- }}}
 
@@ -27,8 +27,9 @@ theme.bg_urgent = theme.bg_normal
 
 -- {{{ Borders
 theme.border_width  = 1
-theme.border_focus  = "#6F6F6F"
-theme.border_normal = theme.bg_normal
+theme.border_focus  = "#8E2323"
+theme.border_normal = "#333333"
+
 theme.border_marked = theme.fg_urgent
 -- }}}
 
@@ -139,6 +140,5 @@ theme.titlebar_maximized_button_focus_inactive  = theme.confdir .. "/icons/title
 theme.titlebar_maximized_button_normal_inactive = theme.confdir .. "/icons/titlebar/maximized_normal_inactive.png"
 -- }}}
 -- }}}
-
 
 return theme
