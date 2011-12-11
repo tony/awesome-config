@@ -462,9 +462,9 @@ mytimer = timer { timeout = x }
 mytimer:add_signal("timeout", function()
 
   -- tell awsetbg to randomly choose a wallpaper from your wallpaper directory
-  --os.execute("awsetbg -T -r /home/tony/Dropbox/Photos/Wallpaper/1600x900&")
-  --os.execute("find /home/tony/Dropbox/Photos/Wallpaper/1600x900/ -type f -name '*.jpg' -o -name '*.png' -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
-  os.execute("find /home/tony/Pictures/Wallpaper/1600x900/ -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
+  -- os.execute("awsetbg -T -r /home/tony/Dropbox/Photos/Wallpaper/1601x900&")
+  os.execute("find /home/tony/Dropbox/Photos/Wallpaper/1600x900/ -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
+  -- os.execute("find /home/tony/Pictures/Wallpaper/1600x900/ -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
   -- stop the timer (we don't need multiple instances running at the same time)
   mytimer:stop()
 
