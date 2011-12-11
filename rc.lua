@@ -45,12 +45,22 @@ layouts = {
 }
 -- }}}
 
-
+-- {{{ Tags
+--tags = {}
+--for s = 1, screen.count() do
+--tags[s] = awful.tag({ "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"}, s,
+--{ layouts[1], layouts[9], layouts[1], -- Tags: 1, 2, 3
+--layouts[1], layouts[12], layouts[2], -- 4, 5 ,6
+--layouts[2], layouts[1], layouts[3], layouts[1] -- 7, 8, 9, 10
+--})
+--end
+-- }}}
 -- {{{ Tags
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+      tags[s] = awful.tag({"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"}, s, layouts[1])
+--    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
 end
 -- }}}
 
@@ -109,11 +119,11 @@ fsicon = widget({ type = "imagebox" })
 fsicon.image = image(beautiful.widget_fs)
 -- Initialize widgets
 fs = {
-  r = awful.widget.progressbar(), h = awful.widget.progressbar(),
-  s = awful.widget.progressbar(), b = awful.widget.progressbar()
+  r = awful.widget.progressbar(), s = awful.widget.progressbar()
 }
 -- Progressbar properties
 for _, w in pairs(fs) do
+--for w in fs do
   w:set_vertical(true):set_ticks(true)
   w:set_height(14):set_width(5):set_ticks_size(2)
   w:set_border_color(beautiful.border_widget)
@@ -122,15 +132,15 @@ for _, w in pairs(fs) do
      beautiful.fg_center_widget, beautiful.fg_end_widget
   }) -- Register buttons
   w.widget:buttons(awful.util.table.join(
-    awful.button({ }, 1, function () exec("rox", false) end)
+    awful.button({ }, 1, function () exec("dolphin", false) end)
   ))
 end -- Enable caching
 vicious.cache(vicious.widgets.fs)
 -- Register widgets
 vicious.register(fs.r, vicious.widgets.fs, "${/ used_p}",            599)
-vicious.register(fs.h, vicious.widgets.fs, "${/home used_p}",        599)
-vicious.register(fs.s, vicious.widgets.fs, "${/mnt/storage used_p}", 599)
-vicious.register(fs.b, vicious.widgets.fs, "${/mnt/backup used_p}",  599)
+--vicious.register(fs.h, vicious.widgets.fs, "${/home/tony used_p}",        599)
+vicious.register(fs.s, vicious.widgets.fs, "${/media/files used_p}", 599)
+--vicious.register(fs.b, vicious.widgets.fs, "${/mnt/backup used_p}",  599)
 -- }}}
 
 -- {{{ Network usage
@@ -178,11 +188,7 @@ dateicon.image = image(beautiful.widget_date)
 -- Initialize widget
 datewidget = widget({ type = "textbox" })
 -- Register widget
-vicious.register(datewidget, vicious.widgets.date, "%R", 61)
--- Register buttons
-datewidget:buttons(awful.util.table.join(
-  awful.button({ }, 1, function () exec("pylendar.py") end)
-))
+vicious.register(datewidget, vicious.widgets.date, "%m/%d/%Y%l:%M%p", 61)
 -- }}}
 
 -- {{{ System tray
@@ -222,7 +228,7 @@ for s = 1, screen.count() do
     wibox[s] = awful.wibox({      screen = s,
         fg = beautiful.fg_normal, height = 12,
         bg = beautiful.bg_normal, position = "top",
-        border_color = beautiful.border_focus,
+        border_color = beautiful.border_normal,
         border_width = beautiful.border_width
     })
     -- Add widgets to the wibox
@@ -235,9 +241,9 @@ for s = 1, screen.count() do
         separator, volwidget,  volbar.widget, volicon,
         separator, orgwidget,  orgicon,
         separator, upicon,     netwidget, dnicon,
-        separator, fs.b.widget, fs.s.widget, fs.h.widget, fs.r.widget, fsicon,
+        separator, fs.s.widget, fs.r.widget, fsicon,
         separator, membar.widget, memicon,
-        separator, batwidget, baticon,
+        --separator, batwidget, baticon,
         separator, tzswidget, cpugraph.widget, cpuicon,
         separator, ["layout"] = awful.widget.layout.horizontal.rightleft
     }
@@ -392,23 +398,7 @@ awful.rules.rules = {
       border_width = beautiful.border_width,
       border_color = beautiful.border_normal }
     },
-    { rule = { class = "Firefox",  instance = "Navigator" },
-      properties = { tag = tags[screen.count()][3] } },
-    { rule = { class = "Emacs",    instance = "emacs" },
-      properties = { tag = tags[screen.count()][2] } },
-    { rule = { class = "Emacs",    instance = "_Remember_" },
-      properties = { floating = true }, callback = awful.titlebar.add  },
-    { rule = { class = "Xmessage", instance = "xmessage" },
-      properties = { floating = true }, callback = awful.titlebar.add  },
-    { rule = { instance = "firefox-bin" },
-      properties = { floating = true }, callback = awful.titlebar.add  },
-    { rule = { name  = "Alpine" },      properties = { tag = tags[1][4]} },
-    { rule = { class = "Gajim.py" },    properties = { tag = tags[1][5]} },
-    { rule = { class = "Akregator" },   properties = { tag = tags[1][8]} },
-    { rule = { class = "Ark" },         properties = { floating = true } },
-    { rule = { class = "Geeqie" },      properties = { floating = true } },
     { rule = { class = "ROX-Filer" },   properties = { floating = true } },
-    { rule = { class = "Pinentry.*" },  properties = { floating = true } },
 }
 -- }}}
 
@@ -464,3 +454,28 @@ for s = 1, screen.count() do screen[s]:add_signal("arrange", function ()
 end
 -- }}}
 -- }}}
+
+x = 0
+
+-- setup the timer
+mytimer = timer { timeout = x }
+mytimer:add_signal("timeout", function()
+
+  -- tell awsetbg to randomly choose a wallpaper from your wallpaper directory
+  --os.execute("awsetbg -T -r /home/tony/Dropbox/Photos/Wallpaper/1600x900&")
+  --os.execute("find /home/tony/Dropbox/Photos/Wallpaper/1600x900/ -type f -name '*.jpg' -o -name '*.png' -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
+  os.execute("find /home/tony/Pictures/Wallpaper/1600x900/ -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
+  -- stop the timer (we don't need multiple instances running at the same time)
+  mytimer:stop()
+
+  -- define the interval in which the next wallpaper change should occur in seconds
+  -- (in this case anytime between 10 and 20 minutes)
+  x = math.random( 600, 1200)
+
+  --restart the timer
+  mytimer.timeout = x
+  mytimer:start()
+end)
+
+-- initial start when rc.lua is first run
+mytimer:start()
