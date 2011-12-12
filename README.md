@@ -41,16 +41,17 @@ Optional stuff
   * Gentoo: `emerge -av media-fonts/terminus-font`
   * Fedora / CentOS / Redhat: `yum install terminus-fonts`
 
-  In Arch, you may have to edit /etc/X11/xorg.conf and have your font dir to be scanned:
+In Arch, you may have to edit /etc/X11/xorg.conf and have your font dir to be scanned:
 
-  Section "Files"
-    FontPath     "/usr/share/fonts/local"
-  EndSection
+```
+Section "Files"
+	FontPath     "/usr/share/fonts/local"
+EndSection
+```
 
+You may also want to:
+  * `cd /etc/fonts/conf.d`
+  * `ln -sf ../conf.avail/10-autohint.conf ./`
+  * `ln -sf ../conf.avail/70-yes-bitmaps.conf ./`
 
-  Oh btw, you may also want to:
-  # cd /etc/fonts/conf.d
-  # ln -sf ../conf.avail/10-autohint.conf ./
-  # ln -sf ../conf.avail/70-yes-bitmaps.conf ./
-
-  Then restart X.
+Then restart X.
