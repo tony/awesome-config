@@ -24,13 +24,14 @@ editor_cmd = terminal .. " -e " .. editor
 
 -- {{{ Widgets pre-configuration
 wallpaper_dir = "/home/tony/Dropbox/Photos/Wallpaper/1600x900/"
-networks = {'eth0', 'wlan0'} -- Add your devices network interface here netwidget
 
-cpubar = true -- not implemented
-cputext_format = "" -- not implemented
+cpugraph_enable = true -- CPU graph
+cputext_format = " $1%" -- %1 average cpu, %[2..] every other thread individually
 
-membar = true -- not implemented
+membar_enable = true -- Show memory bar
 memtext_format = " $1%" -- %1 percentage, %2 used %3 total %4 free
+
+networks = {'eth0', 'wlan0'} -- Add your devices network interface here netwidget
 -- }}}}
 
 -- {{{ Variable definitions
@@ -92,7 +93,7 @@ vicious.register(tzswidget, vicious.widgets.thermal, " $1C", 19, "thermal_zone0"
 
 
 cpuwidget = widget({ type = "textbox" })
-vicious.register(cpuwidget, vicious.widgets.cpu, " $1% ", 3)
+vicious.register(cpuwidget, vicious.widgets.cpu, cputext_format, 3)
 
 
 -- }}}
@@ -290,8 +291,8 @@ for s = 1, screen.count() do
         separator, volwidget,  volbar.widget, volicon,
         dnicon.image and separator, upicon, netwidget, dnicon or nil,
         separator, fs.r.widget, fs.s.widget, fsicon,
-        separator, memtext, membar.widget, memicon,
-        separator, tzswidget, cpugraph.widget, cpuwidget, cpuicon,
+        separator, memtext, membar_enable and membar.widget or nil, memicon,
+        separator, tzswidget, cpugraph_enable and cpugraph.widget or nil, cpuwidget, cpuicon,
         separator, mpdwidget,
         ["layout"] = awful.widget.layout.horizontal.rightleft
     }
@@ -510,10 +511,7 @@ mytimer = timer { timeout = x }
 mytimer:add_signal("timeout", function()
 
   -- tell awsetbg to randomly choose a wallpaper from your wallpaper directory
-  -- os.execute("awsetbg -T -r /home/tony/Dropbox/Photos/Wallpaper/1601x900&")
   os.execute("find " .. wallpaper_dir .. " -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
-  -- os.execute("find /home/tony/Dropbox/Photos/Wallpaper/1600x900/ -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
-  -- os.execute("find /home/tony/Pictures/Wallpaper/1600x900/ -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
   -- stop the timer (we don't need multiple instances running at the same time)
   mytimer:stop()
 
