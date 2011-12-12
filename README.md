@@ -50,6 +50,7 @@ EndSection
 ```
 
 You may also want to:
+
   * `cd /etc/fonts/conf.d`
   * `ln -sf ../conf.avail/10-autohint.conf ./`
   * `ln -sf ../conf.avail/70-yes-bitmaps.conf ./`
