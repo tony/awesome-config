@@ -32,7 +32,7 @@ local exec   = awful.util.spawn
 local sexec  = awful.util.spawn_with_shell
 
 -- Beautiful theme
-beautiful.init(home .. "/.config/awesome/zenburn.lua")
+beautiful.init(home .. "/.config/awesome/themes/zhongguo/zhongguo.lua")
 
 -- Window management layouts
 layouts = {
