@@ -1,40 +1,52 @@
-Tony Narlock's awesome configuration
-http://www.github.com/tony
+# Tony Narlock's awesome configuration
 
-Version: Awesome 3.4.5
+* Github: http://www.github.com/tony
+* Website: http://www.git-pull.com
 
+Version: Awesome 3.4.10
 Awesome Homepage: http://awesome.naquadah.org
 
-Based off of Adrian C's awesome config: http://git.sysphere.org/awesome-configs/tree/
+Based off of [Adrian C's awesome config](http://git.sysphere.org/awesome-configs).
 
-Changes:
-  - Added vicious and scrath to the awesome config dir to be scanned there
-  - Removed mail
-  - Removed note taker
-  - Uses the default awesome keybinding (exception is modkey+shift+enter for term, xmonad style)
 
+Features
+--------
+  * Mod-Shift-Enter is Terminal
+  * Battery widget - autodetects if you have battery, adds widget
+  * Network widget - pick your devices, eth0 for ethernet, wlan0 for wireless or custom
+  * mpd widget - autodetects if song player, adds widget (requires curl)
+  * Random background picker (requires feh)
+
+Configuration
+-------------
+  * For convenience the rc.lua will keep user-configurable variables at the top, this
+    may greatly obfuscate the inner workings of how rc.lua and confuse those trying to study it.
+
+Installation
+------------
 To use this configuration, git clone this, and mv awesome-config to ~/.config/awesome
 
-  # mkdir ~/.config     (make sure .config exists)
-  # cp -r awesome-config ~/.config/awesome
+  * `cd ~; git clone https://github.com/tony/awesome-config.git` Go to home dir, clone this repository (the config)
+  * `mkdir ~/.config` Created ~/.config if it doesn't exist.
+  * `cp -r awesome-config ~/.config/awesome` Copy our config over
 
-Optional stuff:
-  My favorite coding font is ProggySquareTTSZ, you can grab it from http://www.proggyfonts.com/index.php?menu=download
-  To install ProggySquareSZ, extract the ttf into ~/.fonts and do fc-cache -fv
+Optional stuff
+--------------
 
-  Also, try the font terminus:
+[Terminus](http://terminus-font.sourceforge.net/) is a crisp font pleasant to the eyes.
 
-  ArchLinux:
-  # pacman -S terminus-font
+  * FreeBSD: `cd /usr/ports/x11-fonts/terminus-font/ && make install clean` or `pkg_add -r terminus-font`
+  * ArchLinux: `pacman -S terminus-font`
+  * Debian / Ubuntu: `apt-get install xfonts-terminus`
+  * Gentoo: `emerge -av media-fonts/terminus-font`
+  * Fedora / CentOS / Redhat: `yum install terminus-fonts`
 
-  Then go to vim /etc/X11/xorg.conf and add your font dir to be scanned:
+  In Arch, you may have to edit /etc/X11/xorg.conf and have your font dir to be scanned:
 
   Section "Files"
     FontPath     "/usr/share/fonts/local"
   EndSection
 
-  Ubuntu:
-  # sudo apt-get install xfonts-terminus
 
   Oh btw, you may also want to:
   # cd /etc/fonts/conf.d
@@ -42,13 +54,3 @@ Optional stuff:
   # ln -sf ../conf.avail/70-yes-bitmaps.conf ./
 
   Then restart X.
-
-  Also, you may want to change the font size from 12, to 10, to 9, to 8 depending on resolution and dpi
-
-More tips:
-  If you're not running Ubuntu, you may not have urxvtcd
-
-Go into ~/.config/awesome/rc.lua and change your Terminal from urxvt to urxvtc (must have urxvtd running and present)
-  or utxvtcd (which will scan if daemon is present, if not, open it, then the client)
-
-Ubuntu has urxvtcd which launches daemon and/or client regardless of whether you already have it running. Other distros will make you run urxvtd first, then urxvtc for every client.
