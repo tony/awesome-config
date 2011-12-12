@@ -81,7 +81,7 @@ cpuicon.image = image(beautiful.widget_cpu)
 cpugraph  = awful.widget.graph()
 tzswidget = widget({ type = "textbox" })
 -- Graph properties
-cpugraph:set_width(40):set_height(14)
+cpugraph:set_width(40):set_height(16)
 cpugraph:set_background_color(beautiful.fg_off_widget)
 cpugraph:set_gradient_angle(0):set_gradient_colors({
    beautiful.fg_end_widget, beautiful.fg_center_widget, beautiful.fg_widget
@@ -91,13 +91,25 @@ vicious.register(tzswidget, vicious.widgets.thermal, " $1C", 19, "thermal_zone0"
 -- }}}
 
 -- {{{ Battery state
-baticon = widget({ type = "imagebox" })
-baticon.image = image(beautiful.widget_bat)
+
 -- Initialize widget
 batwidget = widget({ type = "textbox" })
+baticon = widget({ type = "imagebox" })
+
+--vicious.register(batwidget, vicious.widgets.bat, "$1$2%", 61, "BAT0")
+
 -- Register widget
-vicious.register(batwidget, vicious.widgets.bat, "$1$2%", 61, "BAT0")
+vicious.register(batwidget, vicious.widgets.bat,
+	function (widget, args)
+		if   args[2] == 0 then return ""
+		else
+			baticon.image = image(beautiful.widget_bat)
+			return "<span color='white'>".. args[2] .. "%</span>"
+		end
+	end, 61, "BAT0"
+)
 -- }}}
+
 
 -- {{{ Memory usage
 memicon = widget({ type = "imagebox" })
@@ -106,7 +118,7 @@ memicon.image = image(beautiful.widget_mem)
 membar = awful.widget.progressbar()
 -- Pogressbar properties
 membar:set_vertical(true):set_ticks(true)
-membar:set_height(12):set_width(8):set_ticks_size(2)
+membar:set_height(16):set_width(8):set_ticks_size(2)
 membar:set_background_color(beautiful.fg_off_widget)
 membar:set_gradient_colors({ beautiful.fg_widget,
    beautiful.fg_center_widget, beautiful.fg_end_widget
@@ -125,7 +137,7 @@ fs = {
 for _, w in pairs(fs) do
 --for w in fs do
   w:set_vertical(true):set_ticks(true)
-  w:set_height(14):set_width(5):set_ticks_size(2)
+  w:set_height(16):set_width(5):set_ticks_size(2)
   w:set_border_color(beautiful.border_widget)
   w:set_background_color(beautiful.fg_off_widget)
   w:set_gradient_colors({ beautiful.fg_widget,
@@ -152,8 +164,8 @@ upicon.image = image(beautiful.widget_netup)
 netwidget = widget({ type = "textbox" })
 -- Register widget
 vicious.register(netwidget, vicious.widgets.net, '<span color="'
-  .. beautiful.fg_netdn_widget ..'">${eth0 down_kb}</span> <span color="'
-  .. beautiful.fg_netup_widget ..'">${eth0 up_kb}</span>', 3)
+  .. beautiful.fg_netdn_widget ..'">${wlan0 down_kb}</span> <span color="'
+  .. beautiful.fg_netup_widget ..'">${wlan0 up_kb}</span>', 3)
 -- }}}
 
 -- {{{ Volume level
@@ -164,7 +176,7 @@ volbar    = awful.widget.progressbar()
 volwidget = widget({ type = "textbox" })
 -- Progressbar properties
 volbar:set_vertical(true):set_ticks(true)
-volbar:set_height(12):set_width(8):set_ticks_size(2)
+volbar:set_height(16):set_width(8):set_ticks_size(2)
 volbar:set_background_color(beautiful.fg_off_widget)
 volbar:set_gradient_colors({ beautiful.fg_widget,
    beautiful.fg_center_widget, beautiful.fg_end_widget
@@ -190,6 +202,21 @@ datewidget = widget({ type = "textbox" })
 -- Register widget
 vicious.register(datewidget, vicious.widgets.date, "%m/%d/%Y %l:%M%p", 61)
 -- }}}
+
+-- {{{ mpd
+
+mpdwidget = widget({ type = "textbox" })
+--vicious.register(mpdwidget, vicious.widgets.mpd, "$1$2", 61, "Artist {Artist} - Title {Title}")
+vicious.register(mpdwidget, vicious.widgets.mpd,
+	function (widget, args)
+		if   args["{state}"] == "Stop" then return ""
+		else return '<span color="white">музыка:</span> '..
+		     args["{Artist}"]..' - '.. args["{Title}"]
+		end
+end)
+
+-- }}}
+
 
 -- {{{ System tray
 systray = widget({ type = "systray" })
@@ -239,13 +266,13 @@ for s = 1, screen.count() do
         s == screen.count() and systray or nil,
         separator, datewidget, dateicon,
         separator, volwidget,  volbar.widget, volicon,
-        separator, orgwidget,  orgicon,
         separator, upicon,     netwidget, dnicon,
         separator, fs.s.widget, fs.r.widget, fsicon,
         separator, membar.widget, memicon,
-        --separator, batwidget, baticon,
+        baticon.image and separator, batwidget, baticon or nil,
         separator, tzswidget, cpugraph.widget, cpuicon,
-        separator, ["layout"] = awful.widget.layout.horizontal.rightleft
+        separator, mpdwidget,
+        ["layout"] = awful.widget.layout.horizontal.rightleft
     }
 end
 -- }}}
