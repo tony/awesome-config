@@ -75,28 +75,42 @@ separator = widget({ type = "imagebox" })
 separator.image = image(beautiful.widget_sep)
 -- }}}
 
--- {{{ CPU usage and temperature
+-- {{{ CPU usage
+
+-- cpu icon
 cpuicon = widget({ type = "imagebox" })
 cpuicon.image = image(beautiful.widget_cpu)
--- Initialize widgets
-cpugraph  = awful.widget.graph()
 
+-- check for cpugraph_enable == true in config
+if cpugraph_enable then
+	-- Initialize widget
+	cpugraph  = awful.widget.graph()
+
+	-- Graph properties
+	cpugraph:set_width(40):set_height(16)
+	cpugraph:set_background_color(beautiful.fg_off_widget)
+	cpugraph:set_gradient_angle(0):set_gradient_colors({
+	   beautiful.fg_end_widget, beautiful.fg_center_widget, beautiful.fg_widget
+	})
+
+	-- Register graph widget
+	vicious.register(cpugraph,  vicious.widgets.cpu,      "$1")
+end
+
+-- cpu text widget
+cpuwidget = widget({ type = "textbox" }) -- initialize
+vicious.register(cpuwidget, vicious.widgets.cpu, cputext_format, 3) -- register
+
+-- temperature
 tzswidget = widget({ type = "textbox" })
--- Graph properties
-cpugraph:set_width(40):set_height(16)
-cpugraph:set_background_color(beautiful.fg_off_widget)
-cpugraph:set_gradient_angle(0):set_gradient_colors({
-   beautiful.fg_end_widget, beautiful.fg_center_widget, beautiful.fg_widget
-}) -- Register widgets
-vicious.register(cpugraph,  vicious.widgets.cpu,      "$1")
 vicious.register(tzswidget, vicious.widgets.thermal, " $1C", 19, "thermal_zone0")
 
-
-cpuwidget = widget({ type = "textbox" })
-vicious.register(cpuwidget, vicious.widgets.cpu, cputext_format, 3)
-
-
 -- }}}
+
+
+
+
+
 
 -- {{{ Battery state
 
@@ -118,23 +132,27 @@ vicious.register(batwidget, vicious.widgets.bat,
 
 
 -- {{{ Memory usage
+
+-- icon
 memicon = widget({ type = "imagebox" })
 memicon.image = image(beautiful.widget_mem)
--- Initialize widget
-membar = awful.widget.progressbar()
--- Pogressbar properties
-membar:set_vertical(true):set_ticks(true)
-membar:set_height(16):set_width(8):set_ticks_size(2)
-membar:set_background_color(beautiful.fg_off_widget)
-membar:set_gradient_colors({ beautiful.fg_widget,
-   beautiful.fg_center_widget, beautiful.fg_end_widget
-}) -- Register widget
-vicious.register(membar, vicious.widgets.mem, "$1", 13)
 
+if membar_enable then
+	-- Initialize widget
+	membar = awful.widget.progressbar()
+	-- Pogressbar properties
+	membar:set_vertical(true):set_ticks(true)
+	membar:set_height(16):set_width(8):set_ticks_size(2)
+	membar:set_background_color(beautiful.fg_off_widget)
+	membar:set_gradient_colors({ beautiful.fg_widget,
+	   beautiful.fg_center_widget, beautiful.fg_end_widget
+	}) -- Register widget
+	vicious.register(membar, vicious.widgets.mem, "$1", 13)
+end
+
+-- mem text output
 memtext = widget({ type = "textbox" })
 vicious.register(memtext, vicious.widgets.mem, memtext_format, 13)
---vicious.register(memtext, vicious.widgets.mem, "$2MB/$3MB", 13)
---vicious.register(memtext, vicious.widgets.mem, "$1 ($2MB/$3MB)", 13)
 -- }}}
 
 -- {{{ File system usage
