@@ -23,6 +23,8 @@ terminal = "urxvt"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
+networks = {'eth0', 'wlan0'} -- Add your devices network interface here netwidget
+
 -- {{{ Variable definitions
 local altkey = "Mod1"
 local modkey = "Mod4"
@@ -101,7 +103,7 @@ baticon = widget({ type = "imagebox" })
 -- Register widget
 vicious.register(batwidget, vicious.widgets.bat,
 	function (widget, args)
-		if   args[2] == 0 then return ""
+		if args[2] == 0 then return ""
 		else
 			baticon.image = image(beautiful.widget_bat)
 			return "<span color='white'>".. args[2] .. "%</span>"
@@ -135,7 +137,6 @@ fs = {
 }
 -- Progressbar properties
 for _, w in pairs(fs) do
---for w in fs do
   w:set_vertical(true):set_ticks(true)
   w:set_height(16):set_width(5):set_ticks_size(2)
   w:set_border_color(beautiful.border_widget)
@@ -156,17 +157,30 @@ vicious.register(fs.s, vicious.widgets.fs, "${/media/files used_p}", 599)
 -- }}}
 
 -- {{{ Network usage
+function print_net(name, down, up)
+  return '<span color="'
+  .. beautiful.fg_netdn_widget ..'">' .. down .. '</span> <span color="'
+  .. beautiful.fg_netup_widget ..'">' .. up  .. '</span>'
+end
 dnicon = widget({ type = "imagebox" })
 upicon = widget({ type = "imagebox" })
 dnicon.image = image(beautiful.widget_net)
 upicon.image = image(beautiful.widget_netup)
+
 -- Initialize widget
 netwidget = widget({ type = "textbox" })
 -- Register widget
-vicious.register(netwidget, vicious.widgets.net, '<span color="'
-  .. beautiful.fg_netdn_widget ..'">${wlan0 down_kb}</span> <span color="'
-  .. beautiful.fg_netup_widget ..'">${wlan0 up_kb}</span>', 3)
+vicious.register(netwidget, vicious.widgets.net,
+	function (widget, args)
+		for _,device in pairs(networks) do
+			if tonumber(args["{".. device .." carrier}"]) > 0 then
+				return print_net(device, args["{eth0 down_kb}"], args["{eth0 up_kb}"])
+			end
+		end
+	end, 3)
 -- }}}
+
+
 
 -- {{{ Volume level
 volicon = widget({ type = "imagebox" })
@@ -206,10 +220,9 @@ vicious.register(datewidget, vicious.widgets.date, "%m/%d/%Y %l:%M%p", 61)
 -- {{{ mpd
 
 mpdwidget = widget({ type = "textbox" })
---vicious.register(mpdwidget, vicious.widgets.mpd, "$1$2", 61, "Artist {Artist} - Title {Title}")
 vicious.register(mpdwidget, vicious.widgets.mpd,
 	function (widget, args)
-		if   args["{state}"] == "Stop" or args["{state}"] == "N/A" then return ""
+		if args["{state}"] == "Stop" or args["{state}"] == "N/A" then return ""
 		else return '<span color="white">музыка:</span> '..
 		     args["{Artist}"]..' - '.. args["{Title}"]
 		end
