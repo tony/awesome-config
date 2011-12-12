@@ -209,7 +209,7 @@ mpdwidget = widget({ type = "textbox" })
 --vicious.register(mpdwidget, vicious.widgets.mpd, "$1$2", 61, "Artist {Artist} - Title {Title}")
 vicious.register(mpdwidget, vicious.widgets.mpd,
 	function (widget, args)
-		if   args["{state}"] == "Stop" then return ""
+		if   args["{state}"] == "Stop" or args["{state}"] == "N/A" then return ""
 		else return '<span color="white">музыка:</span> '..
 		     args["{Artist}"]..' - '.. args["{Title}"]
 		end
