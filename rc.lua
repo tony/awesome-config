@@ -1,12 +1,11 @@
 -- {{{ License
 --
--- Awesome configuration, using awesome 3.4.5 on Arch GNU/Linux
---   * Adrian C. <anrxc@sysphere.org>
-
--- Screenshot: http://sysphere.org/gallery/snapshots
-
+-- Awesome configuration, using awesome 3.4.10 on Ubuntu 11.10
+--   * Tony N <tony@git-pull.com>
+--
 -- This work is licensed under the Creative Commons Attribution-Share
 -- Alike License: http://creativecommons.org/licenses/by-sa/3.0/
+-- based off Adrian C. <anrxc@sysphere.org>'s rc.lua
 -- }}}
 
 
@@ -23,7 +22,16 @@ terminal = "urxvt"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
+-- {{{ Widgets pre-configuration
+wallpaper_dir = "/home/tony/Dropbox/Photos/Wallpaper/1600x900/"
 networks = {'eth0', 'wlan0'} -- Add your devices network interface here netwidget
+
+cpubar = true -- not implemented
+cputext_format = "" -- not implemented
+
+membar = true -- not implemented
+memtext_format = " $1%" -- %1 percentage, %2 used %3 total %4 free
+-- }}}}
 
 -- {{{ Variable definitions
 local altkey = "Mod1"
@@ -48,21 +56,11 @@ layouts = {
 -- }}}
 
 -- {{{ Tags
---tags = {}
---for s = 1, screen.count() do
---tags[s] = awful.tag({ "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"}, s,
---{ layouts[1], layouts[9], layouts[1], -- Tags: 1, 2, 3
---layouts[1], layouts[12], layouts[2], -- 4, 5 ,6
---layouts[2], layouts[1], layouts[3], layouts[1] -- 7, 8, 9, 10
---})
---end
--- }}}
--- {{{ Tags
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
       tags[s] = awful.tag({"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"}, s, layouts[1])
---    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    --tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
 end
 -- }}}
 
@@ -81,6 +79,7 @@ cpuicon = widget({ type = "imagebox" })
 cpuicon.image = image(beautiful.widget_cpu)
 -- Initialize widgets
 cpugraph  = awful.widget.graph()
+
 tzswidget = widget({ type = "textbox" })
 -- Graph properties
 cpugraph:set_width(40):set_height(16)
@@ -90,6 +89,12 @@ cpugraph:set_gradient_angle(0):set_gradient_colors({
 }) -- Register widgets
 vicious.register(cpugraph,  vicious.widgets.cpu,      "$1")
 vicious.register(tzswidget, vicious.widgets.thermal, " $1C", 19, "thermal_zone0")
+
+
+cpuwidget = widget({ type = "textbox" })
+vicious.register(cpuwidget, vicious.widgets.cpu, " $1% ", 3)
+
+
 -- }}}
 
 -- {{{ Battery state
@@ -97,8 +102,6 @@ vicious.register(tzswidget, vicious.widgets.thermal, " $1C", 19, "thermal_zone0"
 -- Initialize widget
 batwidget = widget({ type = "textbox" })
 baticon = widget({ type = "imagebox" })
-
---vicious.register(batwidget, vicious.widgets.bat, "$1$2%", 61, "BAT0")
 
 -- Register widget
 vicious.register(batwidget, vicious.widgets.bat,
@@ -126,6 +129,11 @@ membar:set_gradient_colors({ beautiful.fg_widget,
    beautiful.fg_center_widget, beautiful.fg_end_widget
 }) -- Register widget
 vicious.register(membar, vicious.widgets.mem, "$1", 13)
+
+memtext = widget({ type = "textbox" })
+vicious.register(memtext, vicious.widgets.mem, memtext_format, 13)
+--vicious.register(memtext, vicious.widgets.mem, "$2MB/$3MB", 13)
+--vicious.register(memtext, vicious.widgets.mem, "$1 ($2MB/$3MB)", 13)
 -- }}}
 
 -- {{{ File system usage
@@ -151,21 +159,18 @@ end -- Enable caching
 vicious.cache(vicious.widgets.fs)
 -- Register widgets
 vicious.register(fs.r, vicious.widgets.fs, "${/ used_p}",            599)
---vicious.register(fs.h, vicious.widgets.fs, "${/home/tony used_p}",        599)
 vicious.register(fs.s, vicious.widgets.fs, "${/media/files used_p}", 599)
---vicious.register(fs.b, vicious.widgets.fs, "${/mnt/backup used_p}",  599)
 -- }}}
 
 -- {{{ Network usage
 function print_net(name, down, up)
-  return '<span color="'
-  .. beautiful.fg_netdn_widget ..'">' .. down .. '</span> <span color="'
-  .. beautiful.fg_netup_widget ..'">' .. up  .. '</span>'
+	return '<span color="'
+	.. beautiful.fg_netdn_widget ..'">' .. down .. '</span> <span color="'
+	.. beautiful.fg_netup_widget ..'">' .. up  .. '</span>'
 end
+
 dnicon = widget({ type = "imagebox" })
 upicon = widget({ type = "imagebox" })
-dnicon.image = image(beautiful.widget_net)
-upicon.image = image(beautiful.widget_netup)
 
 -- Initialize widget
 netwidget = widget({ type = "textbox" })
@@ -174,6 +179,9 @@ vicious.register(netwidget, vicious.widgets.net,
 	function (widget, args)
 		for _,device in pairs(networks) do
 			if tonumber(args["{".. device .." carrier}"]) > 0 then
+				netwidget.found = true
+				dnicon.image = image(beautiful.widget_net)
+				upicon.image = image(beautiful.widget_netup)
 				return print_net(device, args["{eth0 down_kb}"], args["{eth0 up_kb}"])
 			end
 		end
@@ -278,12 +286,12 @@ for s = 1, screen.count() do
         },
         s == screen.count() and systray or nil,
         separator, datewidget, dateicon,
-        separator, volwidget,  volbar.widget, volicon,
-        separator, upicon,     netwidget, dnicon,
-        separator, fs.s.widget, fs.r.widget, fsicon,
-        separator, membar.widget, memicon,
         baticon.image and separator, batwidget, baticon or nil,
-        separator, tzswidget, cpugraph.widget, cpuicon,
+        separator, volwidget,  volbar.widget, volicon,
+        dnicon.image and separator, upicon, netwidget, dnicon or nil,
+        separator, fs.r.widget, fs.s.widget, fsicon,
+        separator, memtext, membar.widget, memicon,
+        separator, tzswidget, cpugraph.widget, cpuwidget, cpuicon,
         separator, mpdwidget,
         ["layout"] = awful.widget.layout.horizontal.rightleft
     }
@@ -503,7 +511,8 @@ mytimer:add_signal("timeout", function()
 
   -- tell awsetbg to randomly choose a wallpaper from your wallpaper directory
   -- os.execute("awsetbg -T -r /home/tony/Dropbox/Photos/Wallpaper/1601x900&")
-  os.execute("find /home/tony/Dropbox/Photos/Wallpaper/1600x900/ -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
+  os.execute("find " .. wallpaper_dir .. " -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
+  -- os.execute("find /home/tony/Dropbox/Photos/Wallpaper/1600x900/ -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
   -- os.execute("find /home/tony/Pictures/Wallpaper/1600x900/ -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
   -- stop the timer (we don't need multiple instances running at the same time)
   mytimer:stop()
