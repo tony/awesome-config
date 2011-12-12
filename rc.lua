@@ -188,7 +188,7 @@ dateicon.image = image(beautiful.widget_date)
 -- Initialize widget
 datewidget = widget({ type = "textbox" })
 -- Register widget
-vicious.register(datewidget, vicious.widgets.date, "%m/%d/%Y%l:%M%p", 61)
+vicious.register(datewidget, vicious.widgets.date, "%m/%d/%Y %l:%M%p", 61)
 -- }}}
 
 -- {{{ System tray
@@ -226,7 +226,7 @@ for s = 1, screen.count() do
     taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, taglist.buttons)
     -- Create the wibox
     wibox[s] = awful.wibox({      screen = s,
-        fg = beautiful.fg_normal, height = 12,
+        fg = beautiful.fg_normal, height = 16,
         bg = beautiful.bg_normal, position = "top",
         border_color = beautiful.border_normal,
         border_width = beautiful.border_width
