@@ -23,7 +23,7 @@ editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 
-wallpaper_dir = "/home/tony/Dropbox/Photos/Wallpaper/1600x900/"
+wallpaper_dir = "/home/tony/Pictures/Wallpaper/1600x900/"
 
 -- {{{ taglist numerals
 taglist_numbers = "chinese" -- we support arabic (1,2,3...),
@@ -281,7 +281,8 @@ vicious.register(datewidget, vicious.widgets.date, "%m/%d/%Y %l:%M%p", 61)
 mpdwidget = widget({ type = "textbox" })
 vicious.register(mpdwidget, vicious.widgets.mpd,
 	function (widget, args)
-		if args["{state}"] == "Stop" or args["{state}"] == "N/A" then return ""
+		if args["{state}"] == "Stop" or args["{state}"] == "N/A"
+			or (args["{Artist}"] == "N/A" and args["{Title}"] == "N/A") then return ""
 		else return '<span color="white">музыка:</span> '..
 		     args["{Artist}"]..' - '.. args["{Title}"]
 		end
