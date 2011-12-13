@@ -15,14 +15,32 @@ require("awful.rules")
 require("awful.autofocus")
 -- User libraries
 require("vicious")
-require("scratch")
+-- require("scratch")
 -- }}}
 
-terminal = "urxvt"
+
+-- {{{ Helper functions
+function clean(string)
+	s = string.gsub(string, '^%s+', '')
+	s = string.gsub(s, '%s+$', '')
+	s = string.gsub(s, '[\n\r]+', ' ')
+	return s
+end
+
+function file_exists(file)
+	local cmd = "/bin/bash -c 'if [ -e " .. file .. " ]; then echo true; fi;'"
+	local fh = io.popen(cmd)
+
+	s = clean(fh:read('*a'))
+
+	if s == 'true' then return true else return nil end
+end
+-- }}}}
+
+
+terminal = file_exists("/usr/bin/urxvtcd") and 'urxvtcd' or 'x-terminal-emulator'
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
-
-
 
 wallpaper_dir = "/home/tony/Pictures/Wallpaper/1600x900/"
 
@@ -47,20 +65,6 @@ cputext_format = " $1%" -- %1 average cpu, %[2..] every other thread individuall
 
 membar_enable = true -- Show memory bar
 memtext_format = " $1%" -- %1 percentage, %2 used %3 total %4 free
-
-function file_exists(file)
-	local cmd = "/bin/bash -c 'if [ -f " .. file .. " ]; then echo true; fi;'"
-	local fh = io.popen(cmd)
-
-	-- clean
-	s = string.gsub(fh:read('*a'), '^%s+', '')
-	s = string.gsub(s, '%s+$', '')
-	s = string.gsub(s, '[\n\r]+', ' ')
-
-	if s == 'true' then return true else return nil end
-end
-
---if file_exists('/usr/bin/curl') then
 
 networks = {'eth0', 'wlan0'} -- Add your devices network interface here netwidget
 -- }}}}
@@ -142,13 +146,17 @@ vicious.register(cpuwidget, vicious.widgets.cpu, cputext_format, 3) -- register
 
 -- temperature
 tzswidget = widget({ type = "textbox" })
-vicious.register(tzswidget, vicious.widgets.thermal, " $1C", 19, "thermal_zone0")
+vicious.register(tzswidget, vicious.widgets.thermal,
+	function (widget, args)
+		if args[1] > 0 then
+			tzfound = true
+			return " " .. args[1] .. "C°"
+		else return "" 
+		end
+	end
+	, 19, "thermal_zone0")
 
 -- }}}
-
-
-
-
 
 
 -- {{{ Battery state
@@ -285,15 +293,18 @@ vicious.register(datewidget, vicious.widgets.date, "%m/%d/%Y %l:%M%p", 61)
 
 -- {{{ mpd
 
-mpdwidget = widget({ type = "textbox" })
-vicious.register(mpdwidget, vicious.widgets.mpd,
-	function (widget, args)
-		if args["{state}"] == "Stop" or args["{state}"] == "N/A"
-			or (args["{Artist}"] == "N/A" and args["{Title}"] == "N/A") then return ""
-		else return '<span color="white">музыка:</span> '..
-		     args["{Artist}"]..' - '.. args["{Title}"]
+if file_exists('/usr/bin/curl') then
+	mpdwidget = widget({ type = "textbox" })
+	vicious.register(mpdwidget, vicious.widgets.mpd,
+		function (widget, args)
+			if args["{state}"] == "Stop" or args["{state}"] == "N/A"
+				or (args["{Artist}"] == "N/A" and args["{Title}"] == "N/A") then return ""
+			else return '<span color="white">музыка:</span> '..
+			     args["{Artist}"]..' - '.. args["{Title}"]
+			end
 		end
-end)
+	)
+end
 
 -- }}}
 
@@ -350,8 +361,9 @@ for s = 1, screen.count() do
         dnicon.image and separator, upicon, netwidget, dnicon or nil,
         separator, fs.r.widget, fs.s.widget, fsicon,
         separator, memtext, membar_enable and membar.widget or nil, memicon,
-        separator, tzswidget, cpugraph_enable and cpugraph.widget or nil, cpuwidget, cpuicon,
-        separator, mpdwidget,
+        separator, tzfound and tzswidget or nil,
+        cpugraph_enable and cpugraph.widget or nil, cpuwidget, cpuicon,
+        mpdwidget and separator, mpdwidget or nil,
         ["layout"] = awful.widget.layout.horizontal.rightleft
     }
 end
@@ -569,7 +581,9 @@ mytimer = timer { timeout = x }
 mytimer:add_signal("timeout", function()
 
   -- tell awsetbg to randomly choose a wallpaper from your wallpaper directory
-  os.execute("find " .. wallpaper_dir .. " -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
+  if file_exists(wallpaper_dir) then
+	  os.execute("find " .. wallpaper_dir .. " -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
+  end
   -- stop the timer (we don't need multiple instances running at the same time)
   mytimer:stop()
 
