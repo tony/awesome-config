@@ -23,6 +23,7 @@ editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 
+
 wallpaper_dir = "/home/tony/Pictures/Wallpaper/1600x900/"
 
 -- {{{ taglist numerals
@@ -47,13 +48,19 @@ cputext_format = " $1%" -- %1 average cpu, %[2..] every other thread individuall
 membar_enable = true -- Show memory bar
 memtext_format = " $1%" -- %1 percentage, %2 used %3 total %4 free
 
-function GetRandomElement(a)
-	return a[math.random(#a)]
+function file_exists(file)
+	local cmd = "/bin/bash -c 'if [ -f " .. file .. " ]; then echo true; fi;'"
+	local fh = io.popen(cmd)
+
+	-- clean
+	s = string.gsub(fh:read('*a'), '^%s+', '')
+	s = string.gsub(s, '%s+$', '')
+	s = string.gsub(s, '[\n\r]+', ' ')
+
+	if s == 'true' then return true else return nil end
 end
 
-
-
---taglist_numbers_sets[]
+--if file_exists('/usr/bin/curl') then
 
 networks = {'eth0', 'wlan0'} -- Add your devices network interface here netwidget
 -- }}}}
