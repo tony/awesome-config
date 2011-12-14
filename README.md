@@ -29,6 +29,8 @@ To use this configuration, git clone this, and mv awesome-config to ~/.config/aw
   * `cd ~; git clone https://github.com/tony/awesome-config.git` Go to home dir, clone this repository (the config)
   * `mkdir ~/.config` Created ~/.config if it doesn't exist.
   * `cp -r awesome-config ~/.config/awesome` Copy our config over
+  * `cd ~/.config/awesome`
+  * `git submodule init && git submodule update`
 
 Configuration
 -------------
