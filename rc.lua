@@ -14,78 +14,45 @@ require("awful")
 require("awful.rules")
 require("awful.autofocus")
 -- User libraries
-require("vicious")
--- require("scratch")
+require("vicious") -- ./vicious
+require("helpers") -- helpers.lua
 -- }}}
 
 
--- {{{ Helper functions
-function clean(string)
-	s = string.gsub(string, '^%s+', '')
-	s = string.gsub(s, '%s+$', '')
-	s = string.gsub(s, '[\n\r]+', ' ')
-	return s
-end
 
-function file_exists(file)
-	local cmd = "/bin/bash -c 'if [ -e " .. file .. " ]; then echo true; fi;'"
-	local fh = io.popen(cmd)
 
-	s = clean(fh:read('*a'))
+-- {{{ Default configuration
+altkey = "Mod1"
+modkey = "Mod4" -- your windows/apple key
 
-	if s == 'true' then return true else return nil end
-end
-
---% Find the path of an application, return nil of doesn't exist
-----@ app (string) Text of the first parameter
-----@ return string of app path, or nil (remember, only nil and false is false in lua)
-function whereis_app(app)
-	local fh = io.popen('which ' .. app)
-	s = clean(fh:read('*a'))
-
-	if s == "" then return nil else return s end
-	return s
-end
--- }}}}
 
 
 terminal = whereis_app('urxvtcd') and 'urxvtcd' or 'x-terminal-emulator'
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
-wallpaper_dir = "/home/tony/Pictures/Wallpaper/1600x900/"
+wallpaper_app = "feh" -- if you want to check for app before trying
+wallpaper_dir = os.getenv("HOME") .. "/Pictures/Wallpaper" -- wallpaper dir
+wallpaper_cmd = "find " .. wallpaper_dir .. " -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale"
 
--- {{{ taglist numerals
+-- taglist numerals
+--- arabic, chinese, {east|persian}_arabic, roman, thai, random
 taglist_numbers = "chinese" -- we support arabic (1,2,3...),
--- arabic, chinese, east_arabic, persian_arabic, random
 
-
-taglist_numbers_langs = { 'arabic', 'chinese', 'east_arabic', 'persian_arabic', }
-taglist_numbers_sets = {
-	arabic={ 1, 2, 3, 4, 5, 6, 7, 8, 9 },
-	chinese={"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"},
-	east_arabic={'١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'}, -- '٠' 0
-	persian_arabic={'٠', '١', '٢', '٣', '۴', '۵', '۶', '٧', '٨', '٩'},
-	roman={'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'},
-	thai={'๑', '๒', '๓', '๔', '๕', '๖', '๗', '๘', '๙', '๑๐'},
-}
--- }}}
-
--- {{{ Widgets pre-configuration
-
-cpugraph_enable = true -- CPU graph
+cpugraph_enable = true -- Show CPU graph
 cputext_format = " $1%" -- %1 average cpu, %[2..] every other thread individually
 
 membar_enable = true -- Show memory bar
 memtext_format = " $1%" -- %1 percentage, %2 used %3 total %4 free
 
-networks = {'eth0', 'wlan0'} -- Add your devices network interface here netwidget
--- }}}}
+networks = {'eth0'} -- add your devices network interface here netwidget, only shows first one thats up.
+
+-- Create personal.lua in this same directory to override these defaults
+require('personal')
+
+-- }}}
 
 -- {{{ Variable definitions
-local altkey = "Mod1"
-local modkey = "Mod4"
-
 local home   = os.getenv("HOME")
 local exec   = awful.util.spawn
 local sexec  = awful.util.spawn_with_shell
@@ -105,6 +72,19 @@ layouts = {
 -- }}}
 
 -- {{{ Tags
+
+-- Taglist numerals
+taglist_numbers_langs = { 'arabic', 'chinese', 'east_arabic', 'persian_arabic', }
+taglist_numbers_sets = {
+	arabic={ 1, 2, 3, 4, 5, 6, 7, 8, 9 },
+	chinese={"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"},
+	east_arabic={'١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'}, -- '٠' 0
+	persian_arabic={'٠', '١', '٢', '٣', '۴', '۵', '۶', '٧', '٨', '٩'},
+	roman={'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'},
+	thai={'๑', '๒', '๓', '๔', '๕', '๖', '๗', '๘', '๙', '๑๐'},
+}
+-- }}}
+
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
@@ -595,7 +575,7 @@ mytimer:add_signal("timeout", function()
 
   -- tell awsetbg to randomly choose a wallpaper from your wallpaper directory
   if file_exists(wallpaper_dir) and whereis_app('feh') then
-	  os.execute("find " .. wallpaper_dir .. " -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
+	  os.execute(wallpaper_cmd)
   end
   -- stop the timer (we don't need multiple instances running at the same time)
   mytimer:stop()
