@@ -25,8 +25,6 @@ require("helpers") -- helpers.lua
 altkey = "Mod1"
 modkey = "Mod4" -- your windows/apple key
 
-
-
 terminal = whereis_app('urxvtcd') and 'urxvtcd' or 'x-terminal-emulator'
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
@@ -48,7 +46,9 @@ memtext_format = " $1%" -- %1 percentage, %2 used %3 total %4 free
 networks = {'eth0'} -- add your devices network interface here netwidget, only shows first one thats up.
 
 -- Create personal.lua in this same directory to override these defaults
-require('personal')
+if file_exists(awful.util.getdir("config") .. '/personal.lua') then
+	require('personal')
+end
 
 -- }}}
 
