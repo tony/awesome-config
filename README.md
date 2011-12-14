@@ -43,9 +43,6 @@ terminal = 'xterm' -- can be app in path, or full path e.g. /usr/bin/xterm
 editor = "vim"
 
 wallpaper_dir = os.getenv("HOME") .. "/yourwallpaper_dir/" -- grabs a random bg
--- wallpaper_app = "feh" -- if you want to check for app before trying
--- wallpaper_cmd = "find " .. wallpaper_dir .. " -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale"
----- Override wallpaper changing command
 
 taglist_numbers = "arabic" -- we support arabic (1,2,3...),
 -- arabic, chinese, {east|persian}_arabic, roman, thai, random
