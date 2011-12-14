@@ -36,8 +36,8 @@ Configuration
   your `~/.config/awesome/personal.lua` file:
 
 ```lua
-altkey = "Mod4"
-modkey = "Mod1" -- your windows/apple key
+altkey = "Mod1"
+modkey = "Mod4" -- your windows/apple key
 
 terminal = 'xterm' -- can be app in path, or full path e.g. /usr/bin/xterm
 editor = "vim"
