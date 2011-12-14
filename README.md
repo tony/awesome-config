@@ -30,6 +30,10 @@ To use this configuration, git clone this, and mv awesome-config to ~/.config/aw
   * `cd ~/.config/awesome`
   * `git submodule init && git submodule update` - download vicious module
 
+Try the one liner:
+
+`git clone https://github.com/tony/awesome-config.git ~/.config/awesome && cd ~/.config/awesome && git submodule init && git submodule update && less ~/.config/awesome/README.md`
+
 Configuration
 -------------
   Create a file called `personal.lua` in `~/.config/awesome`. Here are some things you can place in
