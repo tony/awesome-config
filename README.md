@@ -8,19 +8,23 @@ Awesome Homepage: http://awesome.naquadah.org
 
 Based off of [Adrian C's awesome config](http://git.sysphere.org/awesome-configs).
 
+The aim of this project is to create a robust awesome configuration that works out of the box
+with minimal configuration.
 
 Features
 --------
   * Mod-Shift-Enter is Terminal
   * Battery widget - autodetects if you have battery, adds widget
   * Network widget - pick your devices, eth0 for ethernet, wlan0 for wireless or custom
-  * mpd widget - autodetects if song player, adds widget (requires curl)
+  * Number taglists in various number systems - arabic (1,2,3...), chinese
+  * [mpd](http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki) widget - autodetects if song player, adds widget (requires curl)
   * Random background picker (requires feh)
 
 Configuration
 -------------
   * For convenience the rc.lua will keep user-configurable variables at the top, this
     may greatly obfuscate the inner workings of how rc.lua and confuse those trying to study it.
+  * Coming soon, separate file for user configs.
 
 Installation
 ------------
