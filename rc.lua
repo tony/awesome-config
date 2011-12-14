@@ -18,14 +18,11 @@ require("vicious") -- ./vicious
 require("helpers") -- helpers.lua
 -- }}}
 
-
-
-
 -- {{{ Default configuration
 altkey = "Mod1"
 modkey = "Mod4" -- your windows/apple key
 
-terminal = whereis_app('urxvtcd') and 'urxvtcd' or 'x-terminal-emulator'
+terminal = whereis_app('urxvtcd') and 'urxvtcd' or 'x-terminal-emulator' -- also accepts full path
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -58,7 +55,7 @@ local exec   = awful.util.spawn
 local sexec  = awful.util.spawn_with_shell
 
 -- Beautiful theme
-beautiful.init(home .. "/.config/awesome/themes/zhongguo/zhongguo.lua")
+beautiful.init(awful.util.getdir("config") .. "/themes/zhongguo/zhongguo.lua")
 
 -- Window management layouts
 layouts = {
