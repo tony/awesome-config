@@ -35,10 +35,21 @@ function file_exists(file)
 
 	if s == 'true' then return true else return nil end
 end
+
+--% Find the path of an application, return nil of doesn't exist
+----@ app (string) Text of the first parameter
+----@ return string of app path, or nil (remember, only nil and false is false in lua)
+function whereis_app(app)
+	local fh = io.popen('which ' .. app)
+	s = clean(fh:read('*a'))
+
+	if s == "" then return nil else return s end
+	return s
+end
 -- }}}}
 
 
-terminal = file_exists("/usr/bin/urxvtcd") and 'urxvtcd' or 'x-terminal-emulator'
+terminal = whereis_app('urxvtcd') and 'urxvtcd' or 'x-terminal-emulator'
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -55,6 +66,8 @@ taglist_numbers_sets = {
 	chinese={"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"},
 	east_arabic={'١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'}, -- '٠' 0
 	persian_arabic={'٠', '١', '٢', '٣', '۴', '۵', '۶', '٧', '٨', '٩'},
+	roman={'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'},
+	thai={'๑', '๒', '๓', '๔', '๕', '๖', '๗', '๘', '๙', '๑๐'},
 }
 -- }}}
 
@@ -293,7 +306,7 @@ vicious.register(datewidget, vicious.widgets.date, "%m/%d/%Y %l:%M%p", 61)
 
 -- {{{ mpd
 
-if file_exists('/usr/bin/curl') then
+if whereis_app('curl') and whereis_app('mpd') then
 	mpdwidget = widget({ type = "textbox" })
 	vicious.register(mpdwidget, vicious.widgets.mpd,
 		function (widget, args)
@@ -581,7 +594,7 @@ mytimer = timer { timeout = x }
 mytimer:add_signal("timeout", function()
 
   -- tell awsetbg to randomly choose a wallpaper from your wallpaper directory
-  if file_exists(wallpaper_dir) then
+  if file_exists(wallpaper_dir) and whereis_app('feh') then
 	  os.execute("find " .. wallpaper_dir .. " -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale")
   end
   -- stop the timer (we don't need multiple instances running at the same time)
