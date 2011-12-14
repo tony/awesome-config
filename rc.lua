@@ -345,8 +345,9 @@ for s = 1, screen.count() do
         {   taglist[s], layoutbox[s], separator, promptbox[s],
             ["layout"] = awful.widget.layout.horizontal.leftright
         },
-        s == screen.count() and systray or nil,
-        separator, datewidget, dateicon,
+        --s == screen.count() and systray or nil,
+        systray,separator or nil,
+         datewidget, dateicon,
         baticon.image and separator, batwidget, baticon or nil,
         separator, volwidget,  volbar.widget, volicon,
         dnicon.image and separator, upicon, netwidget, dnicon or nil,
