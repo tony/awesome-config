@@ -26,11 +26,9 @@ Installation
 ------------
 To use this configuration, git clone this, and mv awesome-config to ~/.config/awesome
 
-  * `cd ~; git clone https://github.com/tony/awesome-config.git` Go to home dir, clone this repository (the config)
-  * `mkdir ~/.config` Created ~/.config if it doesn't exist.
-  * `cp -r awesome-config ~/.config/awesome` Copy our config over
+  * `cd ~/.config; git clone https://github.com/tony/awesome-config.git awesome`
   * `cd ~/.config/awesome`
-  * `git submodule init && git submodule update`
+  * `git submodule init && git submodule update` - download vicious module
 
 Configuration
 -------------
@@ -38,9 +36,6 @@ Configuration
   your `~/.config/awesome/personal.lua` file:
 
 ```lua
-altkey = "Mod1"
-modkey = "Mod4" -- your windows/apple key
-
 terminal = 'xterm' -- can be app in path, or full path e.g. /usr/bin/xterm
 editor = "vim"
 
