@@ -28,7 +28,6 @@ editor_cmd = terminal .. " -e " .. editor
 
 wallpaper_app = "feh" -- if you want to check for app before trying
 wallpaper_dir = os.getenv("HOME") .. "/Pictures/Wallpaper" -- wallpaper dir
-wallpaper_cmd = "find " .. wallpaper_dir .. " -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale"
 
 -- taglist numerals
 --- arabic, chinese, {east|persian}_arabic, roman, thai, random
@@ -47,9 +46,11 @@ if file_exists(awful.util.getdir("config") .. '/personal.lua') then
 	require('personal')
 end
 
+
 -- }}}
 
 -- {{{ Variable definitions
+local wallpaper_cmd = "find " .. wallpaper_dir .. " -type f -name '*.jpg'  -print0 | shuf -n1 -z | xargs -0 feh --bg-scale"
 local home   = os.getenv("HOME")
 local exec   = awful.util.spawn
 local sexec  = awful.util.spawn_with_shell
