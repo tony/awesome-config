@@ -68,7 +68,8 @@ networks = {'eth0', 'wlan0'} -- Add your devices network interface here netwidge
   You can use `Mod + Control + r` to reload configuation.
 
 ### Autorun
- Create a file called `autorun.lua` in `~/.config/awesome`.
+  Create a file called `autorun.lua` in `~/.config/awesome`.
+
 ```lua
 run_once("xscreensaver", "-no-splash")         -- starts screensaver daemon 
 run_once("xsetroot", "-cursor_name left_ptr")  -- sets the cursor icon
