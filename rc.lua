@@ -13,10 +13,19 @@
 require("awful")
 require("awful.rules")
 require("awful.autofocus")
+require("naughty")
 -- User libraries
 require("vicious") -- ./vicious
 require("helpers") -- helpers.lua
 -- }}}
+
+
+function dbg(vars)
+	local text = ""
+	for i=1, #vars do text = text .. vars[i] .. " | " end
+	naughty.notify({ text = text, timeout = 0 })
+end
+
 
 -- {{{ Default configuration
 altkey = "Mod1"
@@ -41,10 +50,9 @@ memtext_format = " $1%" -- %1 percentage, %2 used %3 total %4 free
 
 networks = {'eth0'} -- add your devices network interface here netwidget, only shows first one thats up.
 
+require_safe('personal')
+
 -- Create personal.lua in this same directory to override these defaults
-if file_exists(awful.util.getdir("config") .. '/personal.lua') then
-	require('personal')
-end
 
 
 -- }}}
@@ -107,6 +115,9 @@ end
 -- {{{ Reusable separator
 separator = widget({ type = "imagebox" })
 separator.image = image(beautiful.widget_sep)
+
+spacer = widget({ type = "textbox" })
+spacer.width = 3
 -- }}}
 
 -- {{{ CPU usage
@@ -288,7 +299,7 @@ if whereis_app('curl') and whereis_app('mpd') then
 	mpdwidget = widget({ type = "textbox" })
 	vicious.register(mpdwidget, vicious.widgets.mpd,
 		function (widget, args)
-			if args["{state}"] == "Stop" or args["{state}"] == "N/A"
+			if args["{state}"] == "Stop" or args["{state}"] == "Pause" or args["{state}"] == "N/A"
 				or (args["{Artist}"] == "N/A" and args["{Title}"] == "N/A") then return ""
 			else return '<span color="white">музыка:</span> '..
 			     args["{Artist}"]..' - '.. args["{Title}"]
@@ -319,6 +330,7 @@ taglist.buttons = awful.util.table.join(
     awful.button({ },        5, awful.tag.viewprev
 ))
 
+
 for s = 1, screen.count() do
     -- Create a promptbox
     promptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
@@ -343,11 +355,13 @@ for s = 1, screen.count() do
     -- Add widgets to the wibox
     wibox[s].widgets = {
         {   taglist[s], layoutbox[s], separator, promptbox[s],
+            mpdwidget and spacer, mpdwidget or nil,
             ["layout"] = awful.widget.layout.horizontal.leftright
         },
-        --s == screen.count() and systray or nil,
-        systray,separator or nil,
-         datewidget, dateicon,
+        --s == screen.count() and systray or nil, -- show tray on last screen
+        s == 1 and systray or nil, -- only show tray on first screen
+        s == 1 and separator or nil, -- only show on first screen
+        datewidget, dateicon,
         baticon.image and separator, batwidget, baticon or nil,
         separator, volwidget,  volbar.widget, volicon,
         dnicon.image and separator, upicon, netwidget, dnicon or nil,
@@ -355,7 +369,6 @@ for s = 1, screen.count() do
         separator, memtext, membar_enable and membar.widget or nil, memicon,
         separator, tzfound and tzswidget or nil,
         cpugraph_enable and cpugraph.widget or nil, cpuwidget, cpuicon,
-        mpdwidget and separator, mpdwidget or nil,
         ["layout"] = awful.widget.layout.horizontal.rightleft
     }
 end
@@ -439,12 +452,10 @@ globalkeys = awful.util.table.join(
 clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
-    awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
+    awful.key({ modkey,           }, "t",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      awful.client.movetoscreen                        ),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
-    awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
-    awful.key({ modkey,           }, "n",      function (c) c.minimized = not c.minimized    end),
     awful.key({ modkey,           }, "m",
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
@@ -590,3 +601,5 @@ end)
 
 -- initial start when rc.lua is first run
 mytimer:start()
+
+require_safe('autorun')
