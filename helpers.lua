@@ -18,7 +18,11 @@ end
 
 function dbg(vars)
 	local text = ""
-	for i=1, #vars do text = text .. vars[i] .. " | " end
+	if type(vars) == "table" then
+		for i=1, #vars do text = text .. vars[i] .. " | " end
+	elseif type(vars) == "string" then
+		text = vars
+	end
 	naughty.notify({ text = text, timeout = 0 })
 end
 

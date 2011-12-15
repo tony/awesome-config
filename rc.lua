@@ -19,14 +19,6 @@ require("vicious") -- ./vicious
 require("helpers") -- helpers.lua
 -- }}}
 
-
-function dbg(vars)
-	local text = ""
-	for i=1, #vars do text = text .. vars[i] .. " | " end
-	naughty.notify({ text = text, timeout = 0 })
-end
-
-
 -- {{{ Default configuration
 altkey = "Mod1"
 modkey = "Mod4" -- your windows/apple key
