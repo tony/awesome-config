@@ -60,12 +60,13 @@ beautiful.init(awful.util.getdir("config") .. "/themes/zhongguo/zhongguo.lua")
 
 -- Window management layouts
 layouts = {
-  awful.layout.suit.tile,        -- 1
-  awful.layout.suit.tile.bottom, -- 2
-  awful.layout.suit.fair,        -- 3
-  awful.layout.suit.max,         -- 4
-  awful.layout.suit.magnifier,   -- 5
-  awful.layout.suit.floating     -- 6
+  awful.layout.suit.tile,
+  awful.layout.suit.tile.bottom,
+  awful.layout.suit.tile.top,
+  --awful.layout.suit.fair,
+  awful.layout.suit.max,
+  awful.layout.suit.magnifier,
+  --awful.layout.suit.floating
 }
 -- }}}
 
