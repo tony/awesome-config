@@ -70,6 +70,9 @@ networks = {'eth0', 'wlan0'} -- Add your devices network interface here netwidge
 ### Autorun
   Create a file called `autorun.lua` in `~/.config/awesome`.
 
+  First is the binary of the app, the second is the arguments. So to load `xscreensaver -no-splash` we do:
+  `run_once("xscreensaver", "-no-splash")`.
+
 ```lua
 run_once("xscreensaver", "-no-splash")         -- starts screensaver daemon 
 run_once("xsetroot", "-cursor_name left_ptr")  -- sets the cursor icon
@@ -81,7 +84,7 @@ run_once("nm-applet") -- networking
 
 run_once("wmname", "LG3D") -- java fix
 
-run_once("sh /home/tony/.screenlayout/dual-monitor.sh") -- set screens up
+run_once("sh /home/username/.screenlayout/dual-monitor.sh") -- set screens up
 ```
 
 Optional stuff
