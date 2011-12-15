@@ -40,6 +40,8 @@ cputext_format = " $1%" -- %1 average cpu, %[2..] every other thread individuall
 membar_enable = true -- Show memory bar
 memtext_format = " $1%" -- %1 percentage, %2 used %3 total %4 free
 
+date_format = "%a %m/%d/%Y %l:%M%p" -- refer to http://en.wikipedia.org/wiki/Date_(Unix) specifiers
+
 networks = {'eth0'} -- add your devices network interface here netwidget, only shows first one thats up.
 
 require_safe('personal')
@@ -283,7 +285,7 @@ dateicon.image = image(beautiful.widget_date)
 -- Initialize widget
 datewidget = widget({ type = "textbox" })
 -- Register widget
-vicious.register(datewidget, vicious.widgets.date, "%a %m/%d/%Y %l:%M%p", 61)
+vicious.register(datewidget, vicious.widgets.date, date_format, 61)
 -- }}}
 
 -- {{{ mpd
