@@ -245,7 +245,7 @@ vicious.register(netwidget, vicious.widgets.net,
 				netwidget.found = true
 				dnicon.image = image(beautiful.widget_net)
 				upicon.image = image(beautiful.widget_netup)
-				return print_net(device, args["{eth0 down_kb}"], args["{eth0 up_kb}"])
+				return print_net(device, args["{"..device .." down_kb}"], args["{"..device.." up_kb}"])
 			end
 		end
 	end, 3)
