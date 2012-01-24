@@ -12,6 +12,9 @@ theme.themedir       = awful.util.getdir("config")
 theme.themedir      = theme.themedir .. "/themes/zhongguo"
 -- }}}
 
+theme.wallpaper_cmd = { "" }
+
+
 
 -- {{{ Styles
 theme.font      = "Terminus 10"
