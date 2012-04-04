@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>awesome wm configuration by tony</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/tony/awesome-config">Fork On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/tony/awesome-config/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/tony/awesome-config/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>awesome wm configuration</h1>
+          <p>Awesome WM starter config personalization support (personal.vim), theme, polyglot unicode taglists, mpd support.</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/tony">tony</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <p>Version: Awesome 3.4.10
+Awesome Homepage: <a href="http://awesome.naquadah.org">http://awesome.naquadah.org</a></p>
+
+<p>Based off of <a href="http://git.sysphere.org/awesome-configs">Adrian C's awesome config</a>.</p>
+
+<p>The aim of this project is to create a robust awesome configuration that works out of the box
+with minimal configuration.</p>
+
+<h2>Features</h2>
+
+<ul>
+<li>
+<code>Mod + Shift + Enter</code> is Terminal</li>
+<li>
+<code>Mod + Control + r</code> is reload rc.lua</li>
+<li>Battery widget - autodetects if you have battery, adds widget</li>
+<li>Network widget - pick your devices, eth0 for ethernet, wlan0 for wireless or custom</li>
+<li>Number taglists in various number systems - arabic (1,2,3...), chinese</li>
+<li>
+<a href="http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki">mpd</a> widget - autodetects if song player, adds widget (requires curl)</li>
+<li>Random background picker (requires feh)</li>
+</ul><h2>Credits</h2>
+
+<ul>
+<li>rc.lua and zhongguo thing is based off <a href="http://git.sysphere.org/awesome-configs/">Adrian C.'s awesome configuration</a>. Licensed <a href="http://creativecommons.org/licenses/by-sa/3.0/">CC Attribute Share-Alike</a>.</li>
+<li>Some icons used on the bar are from <a href="http://p.yusukekamiyamane.com/">Yusuke Kamiyaman</a>. <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution</a>.</li>
+</ul><h2>Installation</h2>
+
+<p>To use this configuration, git clone this, and mv awesome-config to ~/.config/awesome</p>
+
+<ul>
+<li><code>cd ~/.config; git clone <a href="https://github.com/tony/awesome-config.git">https://github.com/tony/awesome-config.git</a> awesome</code></li>
+<li><code>cd ~/.config/awesome</code></li>
+<li>
+<code>git submodule init &amp;&amp; git submodule update</code> - download vicious module</li>
+</ul><p>Try the one liner:</p>
+
+<div class="highlight">
+<pre>git clone <a href="https://github.com/tony/awesome-config.git">https://github.com/tony/awesome-config.git</a> ~/.config/awesome <span class="o">&amp;&amp;</span> <span class="nb">cd</span> ~/.config/awesome <span class="o">&amp;&amp;</span> git submodule init <span class="o">&amp;&amp;</span> git submodule update <span class="o">&amp;&amp;</span> less ~/.config/awesome/README.md<span class="sb">`</span>
+</pre>
+</div>
+
+
+<h2>Configuration</h2>
+
+<p>Create a file called <code>personal.lua</code> in <code>~/.config/awesome</code>. Here are some things you can place in
+  your <code>~/.config/awesome/personal.lua</code> file:</p>
+
+<div class="highlight">
+<pre><span class="n">terminal</span> <span class="o">=</span> <span class="s1">'</span><span class="s">xterm'</span> <span class="c1">-- can be app in path, or full path e.g. /usr/bin/xterm</span>
+<span class="n">editor</span> <span class="o">=</span> <span class="s2">"</span><span class="s">vim"</span>
+
+<span class="n">wallpaper_dir</span> <span class="o">=</span> <span class="nb">os.getenv</span><span class="p">(</span><span class="s2">"</span><span class="s">HOME"</span><span class="p">)</span> <span class="o">..</span> <span class="s2">"</span><span class="s">/yourwallpaper_dir/"</span> <span class="c1">-- grabs a random bg</span>
+
+<span class="n">taglist_numbers</span> <span class="o">=</span> <span class="s2">"</span><span class="s">arabic"</span> <span class="c1">-- we support arabic (1,2,3...),</span>
+<span class="c1">-- arabic, chinese, {east|persian}_arabic, roman, thai, random</span>
+
+<span class="n">cpugraph_enable</span> <span class="o">=</span> <span class="kc">true</span> <span class="c1">-- show CPU graph</span>
+<span class="n">cputext_format</span> <span class="o">=</span> <span class="s2">"</span><span class="s"> $1%"</span> <span class="c1">-- %1 average cpu, %[2..] every other thread individually</span>
+
+<span class="n">membar_enable</span> <span class="o">=</span> <span class="kc">true</span> <span class="c1">-- show memory bar</span>
+<span class="n">memtext_format</span> <span class="o">=</span> <span class="s2">"</span><span class="s"> $1%"</span> <span class="c1">-- %1 percentage, %2 used %3 total %4 free</span>
+
+<span class="n">date_format</span> <span class="o">=</span> <span class="s2">"</span><span class="s">%a %m/%d/%Y %l:%M%p"</span> <span class="c1">-- refer to <a href="http://en.wikipedia.org/wiki/Date_(Unix)">http://en.wikipedia.org/wiki/Date_(Unix)</a> specifiers</span>
+
+<span class="n">networks</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'</span><span class="s">eth0'</span><span class="p">,</span> <span class="s1">'</span><span class="s">wlan0'</span><span class="p">}</span> <span class="c1">-- Add your devices network interface here netwidget, only show one that works</span>
+</pre>
+</div>
+
+
+<p>save.</p>
+
+<p>You can use <code>Mod + Control + r</code> to reload configuation.</p>
+
+<h3>Autorun</h3>
+
+<p>Create a file called <code>autorun.lua</code> in <code>~/.config/awesome</code>.</p>
+
+<p>First is the binary of the app, the second is the arguments. So to load <code>xscreensaver -no-splash</code> we do:
+  <code>run_once("xscreensaver", "-no-splash")</code>.</p>
+
+<div class="highlight">
+<pre><span class="n">run_once</span><span class="p">(</span><span class="s2">"</span><span class="s">xscreensaver"</span><span class="p">,</span> <span class="s2">"</span><span class="s">-no-splash"</span><span class="p">)</span>         <span class="c1">-- starts screensaver daemon </span>
+<span class="n">run_once</span><span class="p">(</span><span class="s2">"</span><span class="s">xsetroot"</span><span class="p">,</span> <span class="s2">"</span><span class="s">-cursor_name left_ptr"</span><span class="p">)</span>  <span class="c1">-- sets the cursor icon</span>
+
+<span class="c1">--run_once("redshift", "-o -l 0:0 -b 0.5 -t 6500:6500") -- brightness</span>
+<span class="n">run_once</span><span class="p">(</span><span class="s2">"</span><span class="s">ibus-daemon"</span><span class="p">,</span> <span class="s2">"</span><span class="s">--xim"</span><span class="p">)</span> <span class="c1">-- ibus</span>
+<span class="n">run_once</span><span class="p">(</span><span class="nb">os.getenv</span><span class="p">(</span><span class="s2">"</span><span class="s">HOME"</span><span class="p">)</span> <span class="o">..</span> <span class="s2">"</span><span class="s">/.dropbox-dist/dropboxd"</span><span class="p">)</span> <span class="c1">-- dropbox</span>
+<span class="n">run_once</span><span class="p">(</span><span class="s2">"</span><span class="s">nm-applet"</span><span class="p">)</span> <span class="c1">-- networking</span>
+
+<span class="n">run_once</span><span class="p">(</span><span class="s2">"</span><span class="s">wmname"</span><span class="p">,</span> <span class="s2">"</span><span class="s">LG3D"</span><span class="p">)</span> <span class="c1">-- java fix</span>
+
+<span class="n">run_once</span><span class="p">(</span><span class="s2">"</span><span class="s">sh "</span> <span class="o">..</span> <span class="nb">os.getenv</span><span class="p">(</span><span class="s2">"</span><span class="s">HOME"</span><span class="p">)</span> <span class="o">..</span> <span class="s2">"</span><span class="s">/.screenlayout/dual-monitor.sh"</span><span class="p">)</span> <span class="c1">-- set screens up</span>
+</pre>
+</div>
+
+
+<h2>Optional stuff</h2>
+
+<p><a href="http://terminus-font.sourceforge.net/">Terminus</a> is a crisp font pleasant to the eyes.</p>
+
+<ul>
+<li>FreeBSD: <code>cd /usr/ports/x11-fonts/terminus-font/ &amp;&amp; make install clean</code> or <code>pkg_add -r terminus-font</code>
+</li>
+<li>ArchLinux: <code>pacman -S terminus-font</code>
+</li>
+<li>Debian / Ubuntu: <code>apt-get install xfonts-terminus</code>
+</li>
+<li>Gentoo: <code>emerge -av media-fonts/terminus-font</code>
+</li>
+<li>Fedora / CentOS / Redhat: <code>yum install terminus-fonts</code>
+</li>
+</ul><p>In Arch, you may have to edit /etc/X11/xorg.conf and have your font dir to be scanned:</p>
+
+<pre><code>Section "Files"
+    FontPath     "/usr/share/fonts/local"
+EndSection
+</code></pre>
+
+<p>You may also want to:</p>
+
+<ul>
+<li><code>cd /etc/fonts/conf.d</code></li>
+<li><code>ln -sf ../conf.avail/10-autohint.conf ./</code></li>
+<li><code>ln -sf ../conf.avail/70-yes-bitmaps.conf ./</code></li>
+</ul><p>Then restart X.</p>
+
+<p>by Tony Narlock (tony@git-pull.com)</p>
+
+<ul>
+<li>Github: <a href="http://www.github.com/tony">http://www.github.com/tony</a></li>
+<li>Website: <a href="http://www.git-pull.com">http://www.git-pull.com</a></li>
+</ul>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+  </body>
+</html>
