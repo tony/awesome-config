@@ -1,7 +1,3 @@
-# Tony Narlock's awesome configuration 
-* Github: http://www.github.com/tony
-* Website: http://www.git-pull.com
-
 Version: Awesome 3.4.10
 Awesome Homepage: http://awesome.naquadah.org
 
@@ -114,3 +110,8 @@ You may also want to:
   * `ln -sf ../conf.avail/70-yes-bitmaps.conf ./`
 
 Then restart X.
+
+
+by Tony Narlock (tony@git-pull.com)
+* Github: http://www.github.com/tony
+* Website: http://www.git-pull.com
