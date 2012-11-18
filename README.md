@@ -8,8 +8,10 @@ with minimal configuration.
 
 Features
 --------
-  * `Mod + Shift + Enter` is Terminal
-  * `Mod + Control + r` is reload rc.lua
+  * `Modkey + Shift + Enter` is Terminal
+  * `Modkey + Control + r` is reload rc.lua
+  * `Modkey + t` to attach/detach window from tiles
+  * `Modkey + shift + t` to toggle titlebars
   * Battery widget - autodetects if you have battery, adds widget
   * Network widget - pick your devices, eth0 for ethernet, wlan0 for wireless or custom
   * Number taglists in various number systems - arabic (1,2,3...), chinese
