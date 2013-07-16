@@ -524,6 +524,9 @@ awful.rules.rules = {
       border_color = beautiful.border_normal }
     },
     { rule = { class = "ROX-Filer" },   properties = { floating = true } },
+    { rule = { class = "Chromium-browser" },   properties = { floating = false } },
+    { rule = { class = "Google-chrome" },   properties = { floating = false } },
+    { rule = { class = "Firefox" },   properties = { floating = false } },
 }
 -- }}}
 
