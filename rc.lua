@@ -8,15 +8,22 @@
 -- based off Adrian C. <anrxc@sysphere.org>'s rc.lua
 -- }}}
 
-
+local pwd = os.getenv("PWD")
+package.path = pwd .. "/lib/?.lua;" .. package.path
+package.path = pwd .. "/lib/?/?.lua;" .. package.path
+package.path = pwd .. "/lib/?/init.lua;" .. package.path
+package.cpath = pwd .. "/lib/?.so;" .. package.cpath
 -- {{{ Libraries
-require("awful")
-require("awful.rules")
-require("awful.autofocus")
-require("naughty")
+awful = require("awful")
+awful.rules = require("awful.rules")
+awful.autofocus = require("awful.autofocus")
+naughty = require("naughty")
+beautiful = require("beautiful")
+wibox = require("wibox")
+
 -- User libraries
-require("vicious") -- ./vicious
-require("helpers") -- helpers.lua
+local vicious = require("vicious") -- ./vicious
+local helpers = require("helpers") -- helpers.lua
 -- }}}
 
 -- {{{ Default configuration
@@ -109,18 +116,18 @@ end
 -- {{{ Widgets configuration
 --
 -- {{{ Reusable separator
-separator = widget({ type = "imagebox" })
-separator.image = image(beautiful.widget_sep)
+separator = wibox.widget.imagebox()
+separator:set_image(beautiful.widget_sep)
 
-spacer = widget({ type = "textbox" })
+spacer = wibox.widget.textbox()
 spacer.width = 3
 -- }}}
 
 -- {{{ CPU usage
 
 -- cpu icon
-cpuicon = widget({ type = "imagebox" })
-cpuicon.image = image(beautiful.widget_cpu)
+cpuicon = wibox.widget.imagebox()
+cpuicon:set_image(beautiful.widget_cpu)
 
 -- check for cpugraph_enable == true in config
 if cpugraph_enable then
@@ -130,8 +137,12 @@ if cpugraph_enable then
 	-- Graph properties
 	cpugraph:set_width(40):set_height(16)
 	cpugraph:set_background_color(beautiful.fg_off_widget)
-	cpugraph:set_gradient_angle(0):set_gradient_colors({
-	   beautiful.fg_end_widget, beautiful.fg_center_widget, beautiful.fg_widget
+	cpugraph:set_color({
+          type= "linear", from = { 0, 0 }, to = { 0, 20 }, stops = {
+            { 0, beautiful.fg_end_widget },
+            { 0.5, beautiful.fg_center_widget },
+            { 1, beautiful.fg_widget}
+         }
 	})
 
 	-- Register graph widget
@@ -139,11 +150,11 @@ if cpugraph_enable then
 end
 
 -- cpu text widget
-cpuwidget = widget({ type = "textbox" }) -- initialize
+cpuwidget = wibox.widget.textbox() -- initialize
 vicious.register(cpuwidget, vicious.widgets.cpu, cputext_format, 3) -- register
 
 -- temperature
-tzswidget = widget({ type = "textbox" })
+tzswidget = wibox.widget.textbox()
 vicious.register(tzswidget, vicious.widgets.thermal,
 	function (widget, args)
 		if args[1] > 0 then
@@ -160,15 +171,15 @@ vicious.register(tzswidget, vicious.widgets.thermal,
 -- {{{ Battery state
 
 -- Initialize widget
-batwidget = widget({ type = "textbox" })
-baticon = widget({ type = "imagebox" })
+batwidget = wibox.widget.textbox()
+baticon = wibox.widget.imagebox()
 
 -- Register widget
 vicious.register(batwidget, vicious.widgets.bat,
 	function (widget, args)
 		if args[2] == 0 then return ""
 		else
-			baticon.image = image(beautiful.widget_bat)
+			baticon:set_image(beautiful.widget_bat)
 			return "<span color='white'>".. args[2] .. "%</span>"
 		end
 	end, 61, "BAT0"
@@ -179,8 +190,8 @@ vicious.register(batwidget, vicious.widgets.bat,
 -- {{{ Memory usage
 
 -- icon
-memicon = widget({ type = "imagebox" })
-memicon.image = image(beautiful.widget_mem)
+memicon = wibox.widget.imagebox()
+memicon:set_image(beautiful.widget_mem)
 
 if membar_enable then
 	-- Initialize widget
@@ -189,20 +200,25 @@ if membar_enable then
 	membar:set_vertical(true):set_ticks(true)
 	membar:set_height(16):set_width(8):set_ticks_size(2)
 	membar:set_background_color(beautiful.fg_off_widget)
-	membar:set_gradient_colors({ beautiful.fg_widget,
-	   beautiful.fg_center_widget, beautiful.fg_end_widget
+	membar:set_color({
+          type = "linear", from = {0,0}, to= {0, 20},
+          stops= {
+            { 0, beautiful.fg_widget },
+            { 0.5, beautiful.fg_center_widget },
+            { 1, beautiful.fg_end_widget }
+          }
 	}) -- Register widget
 	vicious.register(membar, vicious.widgets.mem, "$1", 13)
 end
 
 -- mem text output
-memtext = widget({ type = "textbox" })
+memtext = wibox.widget.textbox()
 vicious.register(memtext, vicious.widgets.mem, memtext_format, 13)
 -- }}}
 
 -- {{{ File system usage
-fsicon = widget({ type = "imagebox" })
-fsicon.image = image(beautiful.widget_fs)
+fsicon = wibox.widget.imagebox()
+fsicon:set_image(beautiful.widget_fs)
 -- Initialize widgets
 fs = {
   r = awful.widget.progressbar(), s = awful.widget.progressbar()
@@ -213,10 +229,15 @@ for _, w in pairs(fs) do
   w:set_height(16):set_width(5):set_ticks_size(2)
   w:set_border_color(beautiful.border_widget)
   w:set_background_color(beautiful.fg_off_widget)
-  w:set_gradient_colors({ beautiful.fg_widget,
-     beautiful.fg_center_widget, beautiful.fg_end_widget
+  w:set_color({
+    type = "linear", from = {0,0}, to= {0, 20},
+    stops= {
+      { 0, beautiful.fg_widget },
+      { 0.5, beautiful.fg_center_widget },
+      { 1, beautiful.fg_end_widget }
+    }
   }) -- Register buttons
-  w.widget:buttons(awful.util.table.join(
+  w:buttons(awful.util.table.join(
     awful.button({ }, 1, function () exec("dolphin", false) end)
   ))
 end -- Enable caching
@@ -233,19 +254,19 @@ function print_net(name, down, up)
 	.. beautiful.fg_netup_widget ..'">' .. up  .. '</span>'
 end
 
-dnicon = widget({ type = "imagebox" })
-upicon = widget({ type = "imagebox" })
+dnicon = wibox.widget.imagebox()
+upicon = wibox.widget.imagebox()
 
 -- Initialize widget
-netwidget = widget({ type = "textbox" })
+netwidget = wibox.widget.textbox()
 -- Register widget
 vicious.register(netwidget, vicious.widgets.net,
 	function (widget, args)
 		for _,device in pairs(networks) do
 			if tonumber(args["{".. device .." carrier}"]) > 0 then
 				netwidget.found = true
-				dnicon.image = image(beautiful.widget_net)
-				upicon.image = image(beautiful.widget_netup)
+				dnicon:set_image(beautiful.widget_net)
+				upicon:set_image(beautiful.widget_netup)
 				return print_net(device, args["{"..device .." down_kb}"], args["{"..device.." up_kb}"])
 			end
 		end
@@ -255,36 +276,41 @@ vicious.register(netwidget, vicious.widgets.net,
 
 
 -- {{{ Volume level
-volicon = widget({ type = "imagebox" })
-volicon.image = image(beautiful.widget_vol)
+volicon = wibox.widget.imagebox()
+volicon:set_image(beautiful.widget_vol)
 -- Initialize widgets
 volbar    = awful.widget.progressbar()
-volwidget = widget({ type = "textbox" })
+volwidget = wibox.widget.textbox()
 -- Progressbar properties
 volbar:set_vertical(true):set_ticks(true)
 volbar:set_height(16):set_width(8):set_ticks_size(2)
 volbar:set_background_color(beautiful.fg_off_widget)
-volbar:set_gradient_colors({ beautiful.fg_widget,
-   beautiful.fg_center_widget, beautiful.fg_end_widget
+volbar:set_color({
+  type= "linear", from = { 0, 0 }, to = { 0, 20 }, stops = {
+    { 0, beautiful.fg_end_widget },
+    { 0.5, beautiful.fg_center_widget },
+    { 1, beautiful.fg_widget}
+  }
 }) -- Enable caching
+
 vicious.cache(vicious.widgets.volume)
 -- Register widgets
 vicious.register(volbar,    vicious.widgets.volume,  "$1",  2, "PCM")
 vicious.register(volwidget, vicious.widgets.volume, " $1%", 2, "PCM")
 -- Register buttons
-volbar.widget:buttons(awful.util.table.join(
+volbar:buttons(awful.util.table.join(
    awful.button({ }, 1, function () exec("kmix") end),
    awful.button({ }, 4, function () exec("amixer -q set PCM 2dB+", false) vicious.force({volbar, volwidget}) end),
    awful.button({ }, 5, function () exec("amixer -q set PCM 2dB-", false) vicious.force({volbar, volwidget}) end)
 )) -- Register assigned buttons
-volwidget:buttons(volbar.widget:buttons())
+volwidget:buttons(volbar:buttons())
 -- }}}
 
 -- {{{ Date and time
-dateicon = widget({ type = "imagebox" })
-dateicon.image = image(beautiful.widget_date)
+dateicon = wibox.widget.imagebox()
+dateicon:set_image(beautiful.widget_date)
 -- Initialize widget
-datewidget = widget({ type = "textbox" })
+datewidget = wibox.widget.textbox()
 -- Register widget
 vicious.register(datewidget, vicious.widgets.date, date_format, 61)
 -- }}}
@@ -292,7 +318,7 @@ vicious.register(datewidget, vicious.widgets.date, date_format, 61)
 -- {{{ mpd
 
 if whereis_app('curl') and whereis_app('mpd') then
-	mpdwidget = widget({ type = "textbox" })
+	mpdwidget = wibox.widget.textbox()
 	vicious.register(mpdwidget, vicious.widgets.mpd,
 		function (widget, args)
 			if args["{state}"] == "Stop" or args["{state}"] == "Pause" or args["{state}"] == "N/A"
@@ -308,7 +334,7 @@ end
 
 
 -- {{{ System tray
-systray = widget({ type = "systray" })
+systray = wibox.widget.systray()
 -- }}}
 -- }}}
 
@@ -329,7 +355,7 @@ taglist.buttons = awful.util.table.join(
 
 for s = 1, screen.count() do
     -- Create a promptbox
-    promptbox[s] = awful.widget.prompt({ layout = awful.widget.layout.horizontal.leftright })
+    promptbox[s] = awful.widget.prompt()
     -- Create a layoutbox
     layoutbox[s] = awful.widget.layoutbox(s)
     layoutbox[s]:buttons(awful.util.table.join(
@@ -340,7 +366,7 @@ for s = 1, screen.count() do
     ))
 
     -- Create the taglist
-    taglist[s] = awful.widget.taglist(s, awful.widget.taglist.label.all, taglist.buttons)
+    taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist.buttons)
     -- Create the wibox
     wibox[s] = awful.wibox({      screen = s,
         fg = beautiful.fg_normal, height = 16,
@@ -352,7 +378,6 @@ for s = 1, screen.count() do
     wibox[s].widgets = {
         {   taglist[s], layoutbox[s], separator, promptbox[s],
             mpdwidget and spacer, mpdwidget or nil,
-            ["layout"] = awful.widget.layout.horizontal.leftright
         },
         --s == screen.count() and systray or nil, -- show tray on last screen
         s == 1 and systray or nil, -- only show tray on first screen
@@ -365,7 +390,6 @@ for s = 1, screen.count() do
         separator, memtext, membar_enable and membar.widget or nil, memicon,
         separator, tzfound and tzswidget or nil,
         cpugraph_enable and cpugraph.widget or nil, cpuwidget, cpuicon,
-        ["layout"] = awful.widget.layout.horizontal.rightleft
     }
 end
 -- }}}
@@ -535,7 +559,7 @@ awful.rules.rules = {
 -- {{{ Signals
 --
 -- {{{ Manage signal handler
-client.add_signal("manage", function (c, startup)
+client.connect_signal("manage", function (c, startup)
     -- Add titlebar to floaters, but remove those from rule callback
     if awful.client.floating.get(c)
     or awful.layout.get(c.screen) == awful.layout.suit.floating then
@@ -544,7 +568,7 @@ client.add_signal("manage", function (c, startup)
     end
 
     -- Enable sloppy focus
-    c:add_signal("mouse::enter", function (c)
+    c:connect_signal("mouse::enter", function (c)
         if  awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
         and awful.client.focus.filter(c) then
             client.focus = c
@@ -565,12 +589,12 @@ end)
 -- }}}
 
 -- {{{ Focus signal handlers
-client.add_signal("focus",   function (c) c.border_color = beautiful.border_focus  end)
-client.add_signal("unfocus", function (c) c.border_color = beautiful.border_normal end)
+client.connect_signal("focus",   function (c) c.border_color = beautiful.border_focus  end)
+client.connect_signal("unfocus", function (c) c.border_color = beautiful.border_normal end)
 -- }}}
 
 -- {{{ Arrange signal handler
-for s = 1, screen.count() do screen[s]:add_signal("arrange", function ()
+for s = 1, screen.count() do screen[s]:connect_signal("arrange", function ()
     local clients = awful.client.visible(s)
     local layout = awful.layout.getname(awful.layout.get(s))
 
@@ -588,7 +612,7 @@ x = 0
 
 -- setup the timer
 mytimer = timer { timeout = x }
-mytimer:add_signal("timeout", function()
+mytimer:connect_signal("timeout", function()
 
   -- tell awsetbg to randomly choose a wallpaper from your wallpaper directory
   if file_exists(wallpaper_dir) and whereis_app('feh') then
