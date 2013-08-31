@@ -1,6 +1,8 @@
 Version: Awesome 3.4.10
 Awesome Homepage: http://awesome.naquadah.org
 
+Beta testing: Awesome 3.5 is being tested in the [v3.5](https://github.com/tony/awesome-config/tree/v3.5) branch. It is experimental, if you have any problems feel free to file an issue.
+
 Based off of [Adrian C's awesome config](http://git.sysphere.org/awesome-configs).
 
 The aim of this project is to create a robust awesome configuration that works out of the box
@@ -36,6 +38,13 @@ Try the one liner:
 ```bash
 git clone https://github.com/tony/awesome-config.git ~/.config/awesome && cd ~/.config/awesome && git submodule init && git submodule update && less ~/.config/awesome/README.md`
 ```
+
+If you are using awesome version 3.5 (beta, in testing), then do:
+
+  * `cd ~/.config/awesome`
+  * `git checkout v3.5`
+
+Version 3.5 is in testing in the [3.5 branch](https://github.com/tony/awesome-config/tree/v3.5).
 
 Configuration
 -------------
