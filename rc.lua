@@ -339,7 +339,7 @@ systray = wibox.widget.systray()
 -- }}}
 
 -- {{{ Wibox initialisation
-wibox     = {}
+mywibox     = {}
 promptbox = {}
 layoutbox = {}
 taglist   = {}
@@ -368,14 +368,14 @@ for s = 1, screen.count() do
     -- Create the taglist
     taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist.buttons)
     -- Create the wibox
-    wibox[s] = awful.wibox({      screen = s,
+    mywibox[s] = awful.wibox({      screen = s,
         fg = beautiful.fg_normal, height = 16,
         bg = beautiful.bg_normal, position = "top",
         border_color = beautiful.border_normal,
         border_width = beautiful.border_width
     })
     -- Add widgets to the wibox
-    wibox[s].widgets = {
+    mywibox[s].widgets = {
         {   taglist[s], layoutbox[s], separator, promptbox[s],
             mpdwidget and spacer, mpdwidget or nil,
         },
@@ -391,6 +391,89 @@ for s = 1, screen.count() do
         separator, tzfound and tzswidget or nil,
         cpugraph_enable and cpugraph.widget or nil, cpuwidget, cpuicon,
     }
+
+
+
+  local left_layout = wibox.layout.fixed.horizontal()
+  left_layout:fill_space(true)
+  left_layout:add(taglist[s])
+
+  local middle_layout = wibox.layout.fixed.horizontal()
+  middle_layout:add(mpdwidget and spacer, mpdwidget or nil)
+
+
+  local right_layout = wibox.layout.fixed.horizontal()
+
+  if cpugraph_enable and cpugraph then
+    if separator then right_layout:add(separator) end
+    right_layout:add(cpuicon)
+    right_layout:add(cpuwidget)
+    right_layout:add(cpugraph)
+  end
+
+  if tzfound and tzwidth then
+    if separator then right_layout:add(separator) end
+    right_layout:add(tzfound)
+    right_layout:add(tzswidget)
+  end
+
+  
+  if membar_enable and memtext and membar then
+    if separator then right_layout:add(separator) end
+    right_layout:add(memicon)
+    right_layout:add(memtext)
+    right_layout:add(membar)
+  end
+
+
+  if fs.r and fs.s and fsicon then
+    if separator then right_layout:add(separator) end
+    right_layout:add(fsicon)
+    right_layout:add(fs.r)
+    right_layout:add(fs.s)
+  end
+
+
+  if dnicon and upicon and netwidget then
+    if separator then right_layout:add(separator) end
+    right_layout:add(dnicon)
+    right_layout:add(netwidget)
+    right_layout:add(upicon)
+  end
+
+
+  if volwidget and volbar then
+    if separator then right_layout:add(separator) end
+    right_layout:add(volicon)
+    right_layout:add(volbar)
+    right_layout:add(volwidget)
+  end
+
+
+  if baticon and batwidget then
+    if separator then right_layout:add(separator) end
+    right_layout:add(baticon)
+    right_layout:add(batwidget)
+  end
+
+  if separator then right_layout:add(separator) end
+  right_layout:add(dateicon)
+  right_layout:add(datewidget)
+
+  if s == 1 then
+    if separator then right_layout:add(separator) end
+    right_layout:add(s == 1 and systray or nil)
+  end
+
+
+  local layout = wibox.layout.align.horizontal()
+  layout:set_left(left_layout)
+  layout:set_middle(mpdwidget)
+  layout:set_right(right_layout)
+  mywibox[s]:set_widget(layout)
+
+
+
 end
 -- }}}
 -- }}}
