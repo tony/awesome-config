@@ -8,11 +8,6 @@
 -- based off Adrian C. <anrxc@sysphere.org>'s rc.lua
 -- }}}
 
-local pwd = os.getenv("PWD")
-package.path = pwd .. "/lib/?.lua;" .. package.path
-package.path = pwd .. "/lib/?/?.lua;" .. package.path
-package.path = pwd .. "/lib/?/init.lua;" .. package.path
-package.cpath = pwd .. "/lib/?.so;" .. package.cpath
 -- {{{ Libraries
 awful = require("awful")
 awful.rules = require("awful.rules")
