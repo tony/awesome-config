@@ -316,9 +316,8 @@ vicious.register(datewidget, vicious.widgets.date, date_format, 61)
 -- }}}
 
 -- {{{ mpd
-
+mpdwidget = wibox.widget.textbox()
 if whereis_app('curl') and whereis_app('mpd') then
-	mpdwidget = wibox.widget.textbox()
 	vicious.register(mpdwidget, vicious.widgets.mpd,
 		function (widget, args)
 			if args["{state}"] == "Stop" or args["{state}"] == "Pause" or args["{state}"] == "N/A"
@@ -399,8 +398,8 @@ for s = 1, screen.count() do
   left_layout:add(taglist[s])
   left_layout:add(mypromptbox[s])
 
-  --local middle_layout = wibox.layout.fixed.horizontal()
-  --middle_layout:add(mpdwidget and spacer, mpdwidget or nil)
+  local middle_layout = wibox.layout.fixed.horizontal()
+  middle_layout:add(mpdwidget and spacer, mpdwidget or nil)
 
 
   local right_layout = wibox.layout.fixed.horizontal()
@@ -469,7 +468,7 @@ for s = 1, screen.count() do
 
   local layout = wibox.layout.align.horizontal()
   layout:set_left(left_layout)
-  layout:set_middle(mpdwidget)
+  layout:set_middle(middle_layout)
   layout:set_right(right_layout)
   mywibox[s]:set_widget(layout)
 
