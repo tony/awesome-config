@@ -340,7 +340,7 @@ systray = wibox.widget.systray()
 
 -- {{{ Wibox initialisation
 mywibox     = {}
-promptbox = {}
+mypromptbox = {}
 layoutbox = {}
 taglist   = {}
 taglist.buttons = awful.util.table.join(
@@ -355,7 +355,7 @@ taglist.buttons = awful.util.table.join(
 
 for s = 1, screen.count() do
     -- Create a promptbox
-    promptbox[s] = awful.widget.prompt()
+    mypromptbox[s] = awful.widget.prompt()
     -- Create a layoutbox
     layoutbox[s] = awful.widget.layoutbox(s)
     layoutbox[s]:buttons(awful.util.table.join(
@@ -376,7 +376,7 @@ for s = 1, screen.count() do
     })
     -- Add widgets to the wibox
     mywibox[s].widgets = {
-        {   taglist[s], layoutbox[s], separator, promptbox[s],
+        {   taglist[s], layoutbox[s], separator, 
             mpdwidget and spacer, mpdwidget or nil,
         },
         --s == screen.count() and systray or nil, -- show tray on last screen
@@ -397,9 +397,10 @@ for s = 1, screen.count() do
   local left_layout = wibox.layout.fixed.horizontal()
   left_layout:fill_space(true)
   left_layout:add(taglist[s])
+  left_layout:add(mypromptbox[s])
 
-  local middle_layout = wibox.layout.fixed.horizontal()
-  middle_layout:add(mpdwidget and spacer, mpdwidget or nil)
+  --local middle_layout = wibox.layout.fixed.horizontal()
+  --middle_layout:add(mpdwidget and spacer, mpdwidget or nil)
 
 
   local right_layout = wibox.layout.fixed.horizontal()
@@ -545,7 +546,7 @@ globalkeys = awful.util.table.join(
     end),
 
     -- Prompt
-    awful.key({ modkey },            "r",     function () promptbox[mouse.screen]:run() end),
+    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
 
     awful.key({ modkey }, "x",
               function ()
