@@ -36,7 +36,7 @@ To use this configuration, git clone this, and mv awesome-config to ~/.config/aw
 Try the one liner:
 
 ```bash
-git clone https://github.com/tony/awesome-config.git ~/.config/awesome && cd ~/.config/awesome && git submodule init && git submodule update && less ~/.config/awesome/README.md`
+git clone https://github.com/tony/awesome-config.git ~/.config/awesome && cd ~/.config/awesome && git submodule init && git submodule update && less ~/.config/awesome/README.md
 ```
 
 If you are using awesome version 3.5 (beta, in testing), then do:
