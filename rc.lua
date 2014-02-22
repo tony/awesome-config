@@ -526,6 +526,7 @@ awful.rules.rules = {
     },
     { rule = { class = "ROX-Filer" },   properties = { floating = true } },
     { rule = { class = "Chromium-browser" },   properties = { floating = false } },
+    { rule = { class = "Chromium" },   properties = { floating = false } },
     { rule = { class = "Google-chrome" },   properties = { floating = false } },
     { rule = { class = "Firefox" },   properties = { floating = false } },
 }
