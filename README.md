@@ -1,7 +1,7 @@
-Version: Awesome 3.4.10
+Version: **Awesome 3.4.10**
 Awesome Homepage: http://awesome.naquadah.org
 
-Beta testing: Awesome 3.5 is being tested in the [v3.5](https://github.com/tony/awesome-config/tree/v3.5) branch. It is experimental, if you have any problems feel free to file an issue.
+**Beta testing: Awesome 3.5** is being tested in the [v3.5](https://github.com/tony/awesome-config/tree/v3.5) branch. It is experimental, if you have any problems feel free to file an issue.
 
 Based off of [Adrian C's awesome config](http://git.sysphere.org/awesome-configs).
 
@@ -11,9 +11,7 @@ with minimal configuration.
 Looking for maintainer
 ----------------------
 
-I've recently switched to `i3wm`_, this configuration needs a new maintainer to handle v3.5 support and onward. If you are interested make an issue.
-
-.. _i3wm: http://i3wm.org/
+I've recently switched to [i3wm](http://i3wm.org/), this configuration needs a new maintainer to handle v3.5 support and onward. If you are interested make an issue.
 
 Features
 --------
