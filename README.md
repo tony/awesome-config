@@ -8,6 +8,13 @@ Based off of [Adrian C's awesome config](http://git.sysphere.org/awesome-configs
 The aim of this project is to create a robust awesome configuration that works out of the box
 with minimal configuration.
 
+Looking for maintainer
+----------------------
+
+I've recently switched to `i3wm`_, this configuration needs a new maintainer to handle v3.5 support and onward. If you are interested make an issue.
+
+.. _i3wm: http://i3wm.org/
+
 Features
 --------
   * `Modkey + Shift + Enter` is Terminal
