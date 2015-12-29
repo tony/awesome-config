@@ -42,9 +42,9 @@ cputext_format = " $1%" -- %1 average cpu, %[2..] every other thread individuall
 membar_enable = true -- Show memory bar
 memtext_format = " $1%" -- %1 percentage, %2 used %3 total %4 free
 
-date_format = "%a %m/%d/%Y %l:%M%p" -- refer to http://en.wikipedia.org/wiki/Date_(Unix) specifiers
+date_format = "%a %m/%d/%Y %h:%M%p" -- refer to http://en.wikipedia.org/wiki/Date_(Unix) specifiers
 
-networks = {'eth0'} -- add your devices network interface here netwidget, only shows first one thats up.
+networks = {'bge0'} -- add your devices network interface here netwidget, only shows first one thats up.
 
 require_safe('personal')
 
@@ -141,12 +141,12 @@ if cpugraph_enable then
 	})
 
 	-- Register graph widget
-	vicious.register(cpugraph,  vicious.widgets.cpu,      "$1")
+	vicious.register(cpugraph,  vicious.widgets.cpu_freebsd,      "$1")
 end
 
 -- cpu text widget
 cpuwidget = wibox.widget.textbox() -- initialize
-vicious.register(cpuwidget, vicious.widgets.cpu, cputext_format, 3) -- register
+vicious.register(cpuwidget, vicious.widgets.cpu_freebsd, cputext_format, 3) -- register
 
 -- temperature
 tzswidget = wibox.widget.textbox()
@@ -203,12 +203,12 @@ if membar_enable then
             { 1, beautiful.fg_end_widget }
           }
 	}) -- Register widget
-	vicious.register(membar, vicious.widgets.mem, "$1", 13)
+	vicious.register(membar, vicious.widgets.mem_freebsd, "$1", 13)
 end
 
 -- mem text output
 memtext = wibox.widget.textbox()
-vicious.register(memtext, vicious.widgets.mem, memtext_format, 13)
+vicious.register(memtext, vicious.widgets.mem_freebsd, memtext_format, 13)
 -- }}}
 
 -- {{{ File system usage
@@ -255,17 +255,15 @@ upicon = wibox.widget.imagebox()
 -- Initialize widget
 netwidget = wibox.widget.textbox()
 -- Register widget
-vicious.register(netwidget, vicious.widgets.net,
+vicious.register(netwidget, vicious.widgets.net_freebsd,
 	function (widget, args)
 		for _,device in pairs(networks) do
-			if tonumber(args["{".. device .." carrier}"]) > 0 then
 				netwidget.found = true
 				dnicon:set_image(beautiful.widget_net)
 				upicon:set_image(beautiful.widget_netup)
-				return print_net(device, args["{"..device .." down_kb}"], args["{"..device.." up_kb}"])
-			end
+				return print_net(device, args["{down_kb}"], args["{up_kb}"])
 		end
-	end, 3)
+	end, 3, 'bge0')
 -- }}}
 
 
