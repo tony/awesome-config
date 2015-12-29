@@ -17,7 +17,7 @@ beautiful = require("beautiful")
 wibox = require("wibox")
 
 -- User libraries
-local vicious = require("vicious") -- ./vicious
+local vicious = require("vicious_bsd") -- ./vicious
 local helpers = require("helpers") -- helpers.lua
 -- }}}
 
