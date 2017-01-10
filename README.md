@@ -3,7 +3,7 @@ Awesome Homepage: http://awesome.naquadah.org
 
 **Beta testing: Awesome 3.5** is being tested in the [v3.5](https://github.com/tony/awesome-config/tree/v3.5) branch. It is experimental, if you have any problems feel free to file an issue.
 
-Based off of [Adrian C's awesome config](http://git.sysphere.org/awesome-configs).
+Based off of [Adrian C's awesome config](http://git.sysphere.org/awesome-configs/).
 
 The aim of this project is to create a robust awesome configuration that works out of the box
 with minimal configuration.
