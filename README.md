@@ -5,13 +5,8 @@ Awesome Homepage: http://awesome.naquadah.org
 
 Based off of [Adrian C's awesome config](http://git.sysphere.org/awesome-configs/).
 
-The aim of this project is to create a robust awesome configuration that works out of the box
+The aim of this project is to create a robust yet beautiful awesome configuration that works out of the box
 with minimal configuration.
-
-Looking for maintainer
-----------------------
-
-I've recently switched to [i3wm](http://i3wm.org/), this configuration needs a new maintainer to handle v3.5 support and onward. If you are interested make an issue.
 
 Features
 --------
@@ -132,3 +127,9 @@ by Tony Narlock (tony@git-pull.com)
 
 * Github: http://www.github.com/tony
 * Website: http://www.git-pull.com
+
+Current maintainer:
+
+Alex Keyes
+* Github: https://www-github.com/alex-keyes
+* Website: http://alexkey.es
