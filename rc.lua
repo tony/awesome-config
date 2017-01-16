@@ -22,8 +22,8 @@ local helpers = require("helpers") -- helpers.lua
 -- }}}
 
 -- {{{ Default configuration
-altkey = "Mod1"
-modkey = "Mod4" -- your windows/apple key
+altkey = "Mod4"
+modkey = "Mod1" -- your windows/apple key
 
 terminal = whereis_app('urxvtcd') and 'urxvtcd' or 'x-terminal-emulator' -- also accepts full path
 editor = os.getenv("EDITOR") or "vim"
