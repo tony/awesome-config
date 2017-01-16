@@ -519,7 +519,10 @@ globalkeys = awful.util.table.join(
             if client.focus then
                 client.focus:raise()
             end
-        end),
+    end),
+
+    --lock Screen
+    awful.key({ modkey }, "s", function () awful.util.spawn("xscreensaver-command -lock") end),
 
     -- Change Monitor Focus
     awful.key({modkey,            }, "F1",     function () awful.screen.focus(1) end),
