@@ -3,7 +3,7 @@ Awesome Homepage: http://awesome.naquadah.org
 
 **Beta testing: Awesome 3.5** is being tested in the [v3.5](https://github.com/tony/awesome-config/tree/v3.5) branch. It is experimental, if you have any problems feel free to file an issue.
 
-**NOTICE: version 2.5 is going to get the latest features.  I will merge these branches when I am sure that 3.4 still works with them, but that will only happen seldomly.  If you want to try out the latest features I've added (such as a lock screen command, monitor focus changes, etc.) please checkout the 3.5 branch**
+**NOTICE: version 3.5 is going to get the latest features.  I will merge these branches when I am sure that 3.4 still works with them, but that will only happen seldomly.  If you want to try out the latest features I've added (such as a lock screen command, monitor focus changes, etc.) please checkout the 3.5 branch**
 
 Based off of [Adrian C's awesome config](http://git.sysphere.org/awesome-configs/).
 
